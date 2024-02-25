@@ -4,7 +4,7 @@ import IconMenu from "../icons/IconMenu";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-export default function TaskCard({ task, deleteTask, updateTask, openPanelTask }) {
+export default function TaskCard({ task, deleteTask, updateTask, openPanelTask, color }) {
   const [mouseIsOver, setMouseIsOver] = useState(false);
   const [editMode, setEditMode] = useState(false);
 
@@ -21,6 +21,7 @@ export default function TaskCard({ task, deleteTask, updateTask, openPanelTask }
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
+    background: color
   };
   const toggleEditMode = () => {
     setEditMode((prev) => !prev);
@@ -100,7 +101,7 @@ export default function TaskCard({ task, deleteTask, updateTask, openPanelTask }
             }}
             className="task__btn"
           >
-            <IconTrash />
+            <IconTrash style={{stroke: color}} />
           </button>
           <button
             onClick={() => {
@@ -108,7 +109,7 @@ export default function TaskCard({ task, deleteTask, updateTask, openPanelTask }
             }}
             className="task__btn"
           >
-            <IconMenu />
+            <IconMenu style={{stroke: color}}/>
           </button>
         </div>
       )}

@@ -19,14 +19,17 @@ export default function KanbanBoard() {
     {
       id: "a",
       title: "Columna A",
+      color: "azul",
     },
     {
       id: "b",
       title: "Columna B",
+      color: "azul",
     },
     {
       id: "c",
       title: "Columna C",
+      color: "azul",
     },
   ]);
   const [tasks, setTasks] = useState([
@@ -164,10 +167,10 @@ export default function KanbanBoard() {
     const newTasks = tasks.filter((t) => t.columnId !== id);
     setTasks(newTasks);
   };
-  const updateColumn = (id, title) => {
+  const updateColumn = (id, title, color) => {
     const newColumns = columns.map((col) => {
       if (col.id !== id) return col;
-      return { ...col, title };
+      return { ...col, title, color };
     });
     setColumns(newColumns);
   };
@@ -175,6 +178,7 @@ export default function KanbanBoard() {
     const columnToAdd = {
       id: Math.floor(Math.random() * 10001),
       title: `Column ${columns.length + 1}`,
+      color: 'gris'
     };
 
     setColumns([...columns, columnToAdd]);
@@ -188,6 +192,9 @@ export default function KanbanBoard() {
   }
   const closePanelTask = () => {
       setActivePanel(false)
+  }
+  const changeColorColumn = () => {
+
   }
 
   return (
