@@ -13,7 +13,8 @@ export default function ColumnContainer({
   createTask,
   deleteTask,
   updateTask,
-  deleteColumn
+  deleteColumn,
+  openPanelTask,
 }) {
 
   const [editMode, setEditMode] = useState(false);
@@ -91,6 +92,7 @@ export default function ColumnContainer({
               task={task}
               deleteTask={deleteTask}
               updateTask={updateTask}
+              openPanelTask={openPanelTask}
             />
           ))}
         </SortableContext>

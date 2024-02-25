@@ -1,9 +1,10 @@
 import { useState } from "react";
 import IconTrash from "../icons/iconTrash";
+import IconMenu from "../icons/IconMenu";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-export default function TaskCard({ task, deleteTask, updateTask }) {
+export default function TaskCard({ task, deleteTask, updateTask, openPanelTask }) {
   const [mouseIsOver, setMouseIsOver] = useState(false);
   const [editMode, setEditMode] = useState(false);
 
@@ -51,7 +52,7 @@ export default function TaskCard({ task, deleteTask, updateTask }) {
           className="textarea"
           value={task.content}
           autoFocus
-          placeholder="Escribe el contenido aqui"
+          placeholder="Titulo de tarea"
           onBlur={toggleEditMode}
           onKeyDown={(e) => {
             if (e.key === "Enter" && e.shiftKey) {
@@ -71,7 +72,7 @@ export default function TaskCard({ task, deleteTask, updateTask }) {
       {...attributes}
       {...listeners}
       className="task"
-      onClick={toggleEditMode}
+      onClick={(e)=>{openPanelTask(e, task)}}
       onMouseEnter={() => {
         setMouseIsOver(true);
       }}
@@ -84,7 +85,7 @@ export default function TaskCard({ task, deleteTask, updateTask }) {
 
 
 
-      <p>{task.content}</p>
+      <p onClick={toggleEditMode}>{task.content}</p>
 
 
 
@@ -92,14 +93,24 @@ export default function TaskCard({ task, deleteTask, updateTask }) {
 
 
       {mouseIsOver && (
-        <button
-          onClick={() => {
-            deleteTask(task.id);
-          }}
-          className="task__btn-del"
-        >
-          <IconTrash />
-        </button>
+        <div className="task__menu">
+          <button
+            onClick={() => {
+              deleteTask(task.id);
+            }}
+            className="task__btn"
+          >
+            <IconTrash />
+          </button>
+          <button
+            onClick={() => {
+              alert('Sin menu');
+            }}
+            className="task__btn"
+          >
+            <IconMenu />
+          </button>
+        </div>
       )}
     </div>
   );

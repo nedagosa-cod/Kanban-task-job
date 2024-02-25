@@ -12,6 +12,7 @@ import "./styles.scss";
 import TaskCard from "./TaskCard";
 import { createPortal } from "react-dom";
 import IconPlus from "../icons/IconPlus";
+import PanelTask from "./PanelTask";
 
 export default function KanbanBoard() {
   const [columns, setColumns] = useState([
@@ -47,6 +48,10 @@ export default function KanbanBoard() {
   ]);
   const [activeColumn, setActiveColumn] = useState(null);
   const [activeTask, setActiveTask] = useState(null);
+
+  const [activePanel, setActivePanel] = useState(false);
+  const [dataPanel, setDataPanel] = useState(false);
+
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
 
   const sensors = useSensors(
@@ -174,6 +179,17 @@ export default function KanbanBoard() {
 
     setColumns([...columns, columnToAdd]);
   };
+  const openPanelTask = (event, task) => {
+      if (event.target.nodeName == 'DIV') {
+            setActivePanel(true)
+            setDataPanel(task)
+      }
+
+  }
+  const closePanelTask = () => {
+      setActivePanel(false)
+  }
+
   return (
     <div className="kanban-container">
       <DndContext
@@ -195,6 +211,7 @@ export default function KanbanBoard() {
                   deleteTask={deleteTask}
                   updateTask={updateTask}
                   deleteColumn={deleteColumn}
+                  openPanelTask={openPanelTask}
                 />
               ))}
             </SortableContext>
@@ -230,7 +247,17 @@ export default function KanbanBoard() {
 
           )}
         </DragOverlay>
+
       </DndContext>
+      {activePanel && (
+            createPortal(
+                  <PanelTask 
+                        task={dataPanel}
+                        closePanelTask={closePanelTask}
+                  />,
+                  document.body
+            )
+      )}
     </div>
   );
 }
