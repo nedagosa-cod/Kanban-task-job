@@ -139,14 +139,24 @@ export default function KanbanBoard() {
       return arrayMove(columns, activeColumnIndex, overColumnIndex);
     });
   };
-  const createTask = (columnId) => {
-    const newTask = {
-      id: Math.floor(Math.random() * 10001),
-      columnId,
-      content: `Task ${tasks.length + 1}`,
-    };
+  const createTask = (columnId, task) => {
+    if (task) {
+      let newTask = {
+        id: Math.floor(Math.random() * 10001),
+        columnId,
+        content: task.content,
+      };
+      setTasks([...tasks, newTask]);
+    } else {
+      let newTask = {
+        id: Math.floor(Math.random() * 10001),
+        columnId,
+        content: `Task ${tasks.length + 1}`,
+      };
+      setTasks([...tasks, newTask]);
+    }
 
-    setTasks([...tasks, newTask]);
+
   };
   const updateTask = (id, content) => {
     const newTasks = tasks.map((task) => {
@@ -178,24 +188,21 @@ export default function KanbanBoard() {
     const columnToAdd = {
       id: Math.floor(Math.random() * 10001),
       title: `Column ${columns.length + 1}`,
-      color: 'gris'
+      color: "gris",
     };
 
     setColumns([...columns, columnToAdd]);
   };
   const openPanelTask = (event, task) => {
-      if (event.target.nodeName == 'DIV') {
-            setActivePanel(true)
-            setDataPanel(task)
-      }
-
-  }
+    if (event == "DIV" || event.target.nodeName == "DIV") {
+      setActivePanel(true);
+      setDataPanel(task);
+    }
+  };
   const closePanelTask = () => {
-      setActivePanel(false)
-  }
-  const changeColorColumn = () => {
-
-  }
+    setActivePanel(false);
+  };
+  const changeColorColumn = () => {};
 
   return (
     <div className="kanban-container">
@@ -245,26 +252,20 @@ export default function KanbanBoard() {
 
           {activeTask && (
             <div className="second-task">
-                  <TaskCard
-                  task={activeTask}
-                  deleteTask={deleteTask}
-                  updateTask={updateTask}
-                  />
+              <TaskCard
+                task={activeTask}
+                deleteTask={deleteTask}
+                updateTask={updateTask}
+              />
             </div>
-
           )}
         </DragOverlay>
-
       </DndContext>
-      {activePanel && (
-            createPortal(
-                  <PanelTask 
-                        task={dataPanel}
-                        closePanelTask={closePanelTask}
-                  />,
-                  document.body
-            )
-      )}
+      {activePanel &&
+        createPortal(
+          <PanelTask task={dataPanel} closePanelTask={closePanelTask} />,
+          document.body
+        )}
     </div>
   );
 }

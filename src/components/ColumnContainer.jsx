@@ -146,8 +146,10 @@ export default function ColumnContainer({
 
   const handleMenuItemClick = ({ key }) => {
     const keysArray = Object.keys(columColors);
-    if (key > 0) {
+    if (key > 1) {
       updateColumn(column.id, column.title, keysArray[key - 2])
+    } else {
+      deleteColumn(column.id)
     }
   };
   const style = {
@@ -234,9 +236,6 @@ export default function ColumnContainer({
               placement="bottom"
             >
               <button
-                // onClick={() => {
-                //   alert("Open Munu");
-                // }}
                 className="button"
               >
                 <IconMenu  style={{stroke: columColors[column.color]}}/>
@@ -259,6 +258,7 @@ export default function ColumnContainer({
               key={task.id}
               task={task}
               deleteTask={deleteTask}
+              createTask={createTask}
               updateTask={updateTask}
               openPanelTask={openPanelTask}
               color={columColors[column.color]}

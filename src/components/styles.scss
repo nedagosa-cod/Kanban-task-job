@@ -309,4 +309,8 @@
       & .ant-dropdown-menu {
             background: #454353;
       }
+      & .ant-dropdown-menu-item-active {
+            opacity: .9;
+            background: #110a42;
+      }
 }
