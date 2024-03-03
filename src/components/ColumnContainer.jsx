@@ -43,7 +43,7 @@ export default function ColumnContainer({
     rojo: '#E41B1B',
     naranja: '#E4861B',
     amarillo: '#E4CC1B',
-    verde: '#1BE436',
+    verde: '#008a20',
     azul: '#1B7CE4',
     morado: '#9E1BE4',
     fuccia: '#E41BB0'

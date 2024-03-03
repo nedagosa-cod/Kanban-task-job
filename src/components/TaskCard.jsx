@@ -1,10 +1,15 @@
-import { useState } from "react";
-import IconTrash from "../icons/iconTrash";
-import IconMenu from "../icons/IconMenu";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import { Dropdown } from "antd";
-import { CopyOutlined, DeleteOutlined, EditOutlined, FullscreenOutlined } from "@ant-design/icons";
+import { useState } from 'react'
+import IconTrash from '../icons/iconTrash'
+import IconMenu from '../icons/IconMenu'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
+import { Dropdown } from 'antd'
+import {
+  CopyOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  FullscreenOutlined,
+} from '@ant-design/icons'
 
 export default function TaskCard({
   task,
@@ -14,8 +19,8 @@ export default function TaskCard({
   openPanelTask,
   color,
 }) {
-  const [mouseIsOver, setMouseIsOver] = useState(true);
-  const [editMode, setEditMode] = useState(false);
+  const [mouseIsOver, setMouseIsOver] = useState(false)
+  const [editMode, setEditMode] = useState(false)
 
   const {
     setNodeRef,
@@ -27,39 +32,31 @@ export default function TaskCard({
   } = useSortable({
     id: task.id,
     data: {
-      type: "Task",
+      type: 'Task',
       task,
     },
     disabled: editMode,
-  });
+  })
   const items = [
     {
       key: '1',
       icon: <DeleteOutlined />,
       danger: true,
-      label: (
-        <button>
-          Eliminar Tarea
-        </button>
-      ),
+      label: <button>Eliminar Tarea</button>,
     },
     {
       key: '2',
       icon: <CopyOutlined />,
-      label: (
-        <button>
-          Duplicar
-        </button>
-      ),
+      label: <button>Duplicar</button>,
     },
     {
-      type: 'divider'
+      type: 'divider',
     },
     {
       key: '3',
       icon: <EditOutlined />,
       label: (
-        <button className="button-color" style={{color: '#fff'}}>
+        <button className="button-color" style={{ color: '#fff' }}>
           Editar
         </button>
       ),
@@ -69,43 +66,40 @@ export default function TaskCard({
       key: '4',
       icon: <FullscreenOutlined />,
       label: (
-        <button className="button-color" style={{color: '#fff'}}>
-          Abrir en una ventana 
+        <button className="button-color" style={{ color: '#fff' }}>
+          Abrir en una ventana
         </button>
       ),
       disabled: false,
     },
-  ];
+  ]
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
     background: color,
-  };
+  }
   const toggleEditMode = () => {
-    setEditMode((prev) => !prev);
-    setMouseIsOver(false);
-  };
-  const handleMenuItemClick = ({key}) => {
+    setEditMode(prev => !prev)
+    setMouseIsOver(false)
+  }
+  const handleMenuItemClick = ({ key }) => {
     switch (key) {
       case '1':
         deleteTask(task.id)
-        break;
+        break
       case '2':
         createTask(task.columnId, task)
-        break;
+        break
       case '3':
         setEditMode(true)
-        break;
+        break
       case '4':
-        openPanelTask('DIV', task);
-        break;
-    
-      default:
-        break;
+        openPanelTask('DIV', task)
+        break
     }
   }
   if (isDragging) {
-    return <div ref={setNodeRef} style={style} className="task is-dragging" />;
+    return <div ref={setNodeRef} style={style} className="task is-dragging" />
   }
 
   if (editMode) {
@@ -115,23 +109,22 @@ export default function TaskCard({
         style={style}
         {...attributes}
         {...listeners}
-        className="task"
-      >
+        className="task">
         <textarea
           className="textarea"
           value={task.content}
           autoFocus
           placeholder="Titulo de tarea"
           onBlur={toggleEditMode}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && e.shiftKey) {
-              toggleEditMode();
+          onKeyDown={e => {
+            if (e.key === 'Enter' && e.shiftKey) {
+              toggleEditMode()
             }
           }}
-          onChange={(e) => updateTask(task.id, e.target.value)}
+          onChange={e => updateTask(task.id, e.target.value)}
         />
       </div>
-    );
+    )
   }
 
   return (
@@ -141,46 +134,41 @@ export default function TaskCard({
       {...attributes}
       {...listeners}
       className="task"
-      onClick={(e) => {
-        openPanelTask(e, task);
+      onClick={e => {
+        openPanelTask(e, task)
       }}
       onMouseEnter={() => {
-        setMouseIsOver(true);
+        setMouseIsOver(true)
       }}
-      // onMouseLeave={() => {
-      //   setMouseIsOver(false);
-      // }}
-    >
+      onMouseLeave={() => {
+        setMouseIsOver(false)
+      }}>
       <p onClick={toggleEditMode}>{task.content}</p>
 
       {mouseIsOver && (
         <div className="task__menu">
           <button
             onClick={() => {
-              deleteTask(task.id);
+              deleteTask(task.id)
             }}
-            className="task__btn"
-          >
+            className="task__btn">
             <IconTrash style={{ stroke: color }} />
           </button>
 
           <Dropdown
             menu={{
               items,
-              onClick: handleMenuItemClick
-            }} 
+              onClick: handleMenuItemClick,
+            }}
             trigger={['click']}
-            overlayClassName='dropdown-content'
-            placement="bottom"
-          >
-            <button
-              className="task__btn"
-            >
+            overlayClassName="dropdown-content"
+            placement="bottom">
+            <button className="task__btn">
               <IconMenu style={{ stroke: color }} />
             </button>
           </Dropdown>
         </div>
       )}
     </div>
-  );
+  )
 }

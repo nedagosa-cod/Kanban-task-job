@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
 * {
   margin: 0;
@@ -12,33 +12,17 @@
   text-align: center;
 }
 
-
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-
 html {
   font-size: 62.5%;
 }
 body {
   display: flex;
+  background: #dee2e6;
   width: 100%;
   min-height: 100vh;
   font-size: 100%;
-  background: linear-gradient(110deg, #312d3f .06%, #26233f);
-  background-image: url('/background.jpg');
+  /* background: linear-gradient(110deg, #312d3f 0.06%, #26233f);
+  background-image: url("/background.jpg"); */
   font-family: "Montserrat", sans-serif;
 }
 
@@ -73,62 +57,8 @@ button:hover {
 }
 button:focus,
 button:focus-visible {
-  outline: none
+  outline: none;
 }
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
-
-
-
-
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
 
 form,
 input,
@@ -136,16 +66,22 @@ textarea,
 select,
 button,
 label {
-        hyphens: none;
-        font-family: inherit;
-        font-size: inherit;
-        background-color: transparent;
-        color: inherit;
-        border: none;
-        display: block;
-        outline: none;
-        -webkit-hyphens: none;
-        -moz-hyphens: none;
-        -ms-hyphens: none;
-        outline: none;
+  hyphens: none;
+  font-family: inherit;
+  font-size: inherit;
+  background-color: transparent;
+  color: inherit;
+  border: none;
+  display: block;
+  outline: none;
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  outline: none;
+}
+
+.app {
+  width: 100%;
+  display: flex;
+  min-height: 100vh;
 }
