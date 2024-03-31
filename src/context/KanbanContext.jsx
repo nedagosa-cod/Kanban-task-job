@@ -45,12 +45,27 @@ const KanbanProvider = ({ children }) => {
         },
         {
           id: '3',
-          type: 'text',
-          title: 'Correo',
+          type: 'list',
+          title: 'Paises',
           value: '',
+          list: ['Colombia', 'Guatemala', 'Argentina', 'Venezuela'],
         },
       ],
       description: '',
+      comments: [
+        {
+          id: '1',
+          date: '2023/06/24',
+          content:
+            '<p><u>Este es un </u><strong><u>comentario</u> </strong><em>que va</em> a tener <strong style="color: rgb(230, 0, 0);">ciertas </strong>ediciones</p>',
+        },
+        {
+          id: '2',
+          date: '2023/06/24',
+          content:
+            '<p><u>Este es un </u><strong><u>comentario</u> </strong><em>que va</em> a tener <strong style="color: rgb(230, 0, 0);">ciertas </strong>ediciones</p>',
+        },
+      ],
     },
     {
       id: '2',
@@ -77,6 +92,7 @@ const KanbanProvider = ({ children }) => {
         },
       ],
       description: '',
+      comments: [],
     },
     {
       id: '3',
@@ -103,13 +119,60 @@ const KanbanProvider = ({ children }) => {
         },
       ],
       description: '',
+      comments: [],
     },
   ])
+  const createTask = (columnId, task) => {
+    if (task) {
+      let newTask = {
+        id: Math.floor(Math.random() * 10001),
+        columnId,
+        content: task.content,
+        properties: task.properties,
+        description: task.description,
+      }
+      setTasks([...tasks, newTask])
+    } else {
+      let newTask = {
+        id: Math.floor(Math.random() * 10001),
+        columnId,
+        content: `Task ${tasks.length + 1}`,
+        properties: [],
+        description: '',
+      }
+      setTasks([...tasks, newTask])
+    }
+  }
+  const deleteTask = id => {
+    const newTasks = tasks.filter(task => task.id !== id)
+    setTasks(newTasks)
+  }
+  const updateTask = (id, content) => {
+    const newTasks = tasks.map(task => {
+      if (task.id !== id) return task
+      return { ...task, content }
+    })
+
+    setTasks(newTasks)
+  }
+  const updateTaskDDBB = dataBase => {
+    const newTasks = tasks.map(task => {
+      if (task.id !== dataBase.id) return task
+      return dataBase
+    })
+
+    setTasks(newTasks)
+  }
+
   const data = {
     tasks,
     setTasks,
     columns,
     setColumns,
+    updateTaskDDBB,
+    updateTask,
+    deleteTask,
+    createTask,
   }
 
   return (

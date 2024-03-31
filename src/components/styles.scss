@@ -1,7 +1,12 @@
-// svg {
-//       width: 5rem;
-//       height: 5rem;
-// }
+$color1: #212529;
+$color2: #343a40;
+$color3: #495057;
+$color4: #6c757d;
+$color5: #adb5bd;
+$color6: #ced4da;
+$color7: #dee2e6;
+$color8: #e9ecef;
+$color9: #f8f9fa;
 
 .kanban-container {
   display: flex;
@@ -12,7 +17,7 @@
   overflow-x: auto;
   padding: 2rem;
   scrollbar-width: thin;
-  scrollbar-color: #110a42 #292929;
+  scrollbar-color: $color2 $color8;
 
   & .column-container {
     display: flex;
@@ -97,7 +102,7 @@
         cursor: pointer;
 
         &:hover {
-          border: 2px solid #fff;
+          border: 2px solid $color1;
         }
 
         &__btn {
@@ -113,7 +118,7 @@
 
           & svg {
             width: 2rem;
-            stroke: #fff;
+            stroke: $color1;
             margin: auto;
           }
         }
@@ -128,7 +133,7 @@
         //       width: 100%;
         //       resize: none;
         //       border: none;
-        //       color: #fff;
+        //       color: $color1;
 
         //       &:focus {
         //             outline: none;
@@ -214,7 +219,7 @@
       background: #3d3d3d;
       font-size: 1.6rem;
       padding: 1.6rem;
-      color: #fff;
+      color: $color1;
       border: 2px solid pink;
       border-radius: 0.8rem;
       -webkit-border-radius: 0.8rem;
@@ -231,8 +236,8 @@
   & .second-task {
     opacity: 0.4;
     background: #af202091;
-    color: #fff;
-    border: 2px solid #fff;
+    color: $color1;
+    border: 2px solid $color1;
     padding: 0.8rem;
     height: auto;
     min-height: 60px;
@@ -261,39 +266,83 @@
   width: 100%;
   height: 100vh;
   /* From https://css.glass */
-  background: rgba(34, 34, 34, 0.2);
+  background: rgba(131, 131, 131, 0.6);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(5px);
 
   & .panel {
+    display: flex;
     width: 70%;
     height: 90%;
     margin: auto;
+    padding: 1rem;
     /* From https://css.glass */
-    background: rgba(0, 0, 0, 0.9);
+    background: #f8f9fa7e;
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     border: 1px solid rgba(94, 94, 94, 0.3);
-    padding: 6rem 12rem;
     overflow-y: auto;
     scrollbar-width: thin;
+    color: $color1;
+    & .left {
+      width: 65%;
+      border-right: 1px solid #adb5bd;
+      padding: 2rem 3.4rem;
+      & .textarea {
+        resize: none;
+        height: 12rem;
+        width: 1080px;
+        color: $color1;
+        font-size: 3rem;
+        overflow-y: hidden;
+        white-space: normal;
+        margin-top: 0.6rem;
+        cursor: pointer;
+        white-space: normal;
+        // border: 1px solid red;
+        &.edit {
+          cursor: auto;
+          height: 12rem;
+          // max-height: 12rem;
+        }
+      }
+    }
+    & .right {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-left: 1rem;
+      gap: 1.2rem;
+      width: 35%;
+      & .box-quill {
+        width: 95%;
+        margin: 0 auto;
+        padding: 1rem 0;
+        border-bottom: 1px inset $color4;
+      }
+      & .comments {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.8rem;
+      }
+    }
     &__title {
       display: flex;
       font-size: 3rem;
-      color: #fff;
-
+      color: $color1;
       & svg {
-        stroke: #fff;
+        stroke: $color1;
         width: 5rem;
         height: 5rem;
         margin-right: 1.2rem;
         margin-bottom: 10rem;
       }
       &--edit-mode {
-        border: 1px solid #fff;
+        border: 1px solid $color1;
       }
     }
     &__create-prop {
@@ -317,19 +366,12 @@
         -o-border-radius: 0.6rem;
       }
     }
-    &__comments {
-      width: 100%;
-      margin: 4rem 0;
-      min-height: 8rem;
-      border-top: 1px solid rgba(94, 94, 94, 0.3);
-      border-bottom: 1px solid rgba(94, 94, 94, 0.3);
-    }
     & .panel-property {
       display: flex;
       align-items: center;
       width: 100%;
       height: 4.2rem;
-      color: #fff;
+      color: $color1;
       margin: 0.6rem auto;
       position: relative;
       right: 4rem;
@@ -403,13 +445,13 @@
         display: flex;
         align-items: center;
         font-size: 3.2rem;
-        color: #fff;
+        color: $color1;
         margin-bottom: 0.8rem;
         & svg {
           margin-right: 0.8rem;
           width: 3rem;
           height: 3rem;
-          stroke: #fff;
+          stroke: $color1;
         }
       }
     }
@@ -460,7 +502,7 @@
           display: inline-block;
           background: #adb5bd;
           background: transparent;
-          color: #fff;
+          color: $color1;
           padding: 0.4rem 0.6rem;
           cursor: default;
           & .option-delete {
@@ -567,6 +609,44 @@
         }
       }
     }
+    & .box-comment {
+      position: relative;
+      &__content {
+        font-size: 1.2rem;
+        background: $color7;
+        padding: 1rem 2rem;
+        border-radius: 3rem;
+        -webkit-border-radius: 3rem;
+        -moz-border-radius: 3rem;
+        -ms-border-radius: 3rem;
+        -o-border-radius: 3rem;
+      }
+      &__buttons {
+        position: absolute;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        bottom: -2rem;
+        left: 0;
+        gap: 0.2rem;
+        padding: 0 2rem;
+        width: 100%;
+        color: #3d3481;
+        margin: auto;
+        &--box {
+          display: flex;
+          visibility: hidden;
+        }
+        & button {
+          &:hover {
+            color: #171046;
+          }
+        }
+      }
+      &:hover .box-comment__buttons--box {
+        visibility: visible;
+      }
+    }
   }
 }
 
@@ -595,25 +675,6 @@
   }
 }
 
-.textarea {
-  resize: none;
-  height: 12rem;
-  width: 1080px;
-  color: #fff;
-  font-size: 3rem;
-  overflow-y: hidden;
-  white-space: normal;
-  margin-top: 0.6rem;
-  cursor: pointer;
-  white-space: normal;
-  // border: 1px solid red;
-  &.edit {
-    cursor: auto;
-    height: 12rem;
-    // max-height: 12rem;
-  }
-}
-
 .prop-input {
   cursor: pointer;
   height: 100%;
@@ -631,4 +692,75 @@
   &.date {
     width: auto;
   }
+}
+
+.bookmarkBtn {
+  width: 160px;
+  height: 40px;
+  border-radius: 40px;
+  margin: 2rem;
+  border: none;
+  background-color: $color7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition-duration: 0.3s;
+  overflow: hidden;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.062);
+}
+
+.IconContainer {
+  width: 30px;
+  height: 30px;
+  background-color: $color1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 2;
+  transition-duration: 0.3s;
+  & .iconSend {
+    width: 25px;
+    height: 25px;
+    stroke: white;
+    color: white;
+  }
+}
+
+.icon {
+  border-radius: 1px;
+}
+
+.text {
+  height: 100%;
+  width: 100px;
+  margin: 0 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(26, 26, 26);
+  z-index: 1;
+  transition-duration: 0.3s;
+  font-size: 1.04em;
+  font-weight: 600;
+}
+
+.bookmarkBtn:hover .IconContainer {
+  width: 120px;
+  border-radius: 40px;
+  transition-duration: 0.3s;
+}
+
+.bookmarkBtn:hover .text {
+  transform: translate(10px);
+  width: 0;
+  font-size: 0;
+  transition-duration: 0.3s;
+}
+
+.bookmarkBtn:active {
+  transform: scale(0.95);
+  transition-duration: 0.3s;
 }

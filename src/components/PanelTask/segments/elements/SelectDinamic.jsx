@@ -1,29 +1,45 @@
 import { CloseCircleOutlined } from '@ant-design/icons'
 import { useState } from 'react'
 
-export const SelectDinamic = ({ sendProps, property, properties }) => {
-  const [options, setOption] = useState([])
-  const [optionsSelected, setOptionsSelected] = useState()
+export const SelectDinamic = ({
+  updateProperty,
+  property,
+  eventClickPanel,
+}) => {
+  const [options, setOption] = useState(property.list)
+  const [optionsSelected, setOptionsSelected] = useState(property.value)
+  const [nameOption, setNameOption] = useState('')
   const [selectActive, setSelectActive] = useState(false)
   const [placeholder, setPlaceholder] = useState(true)
   const [editMode, setEditMode] = useState(false)
-  const [nameOption, setNameOption] = useState('')
 
-  const deleteOption = wordDelete => {
-    const newArray = options.filter(element => !element.includes(wordDelete))
-    setOption(newArray)
+  const deleteOption = (title, listDelete) => {
+    if (title) {
+      console.log('hola')
+      setOptionsSelected('')
+      setPlaceholder(true)
+    } else {
+      const newArray = options.filter(element => !element.includes(listDelete))
+      setOption(newArray)
+    }
   }
   const newOptionSelected = newValueOption => {
     setOptionsSelected(newValueOption)
-    let newProperty = [...properties]
-    newProperty.push({
+    updateProperty(false, {
       id: property.id,
       type: property.type,
       title: property.title,
-      value: optionsSelected,
+      value: newValueOption,
     })
-    sendProps(newProperty)
   }
+  const execute = () => {
+    setEditMode(false)
+    setTimeout(() => {
+      setSelectActive(false)
+    }, 100)
+    console.log('sirve') // arreglando que cuando el panel sea clikeado me cierre el selectDianmic
+  }
+  eventClickPanel(execute)
 
   return (
     <div className={'SelectDinamic ' + selectActive}>
@@ -33,7 +49,7 @@ export const SelectDinamic = ({ sendProps, property, properties }) => {
           setSelectActive(true)
         }}>
         <div className="SelectDinamic__option-content">
-          {!selectActive && placeholder && (
+          {!selectActive && placeholder && !optionsSelected && (
             <p className="SelectDinamic__option-content--placeholder">
               Lista deplegable
             </p>
@@ -45,7 +61,7 @@ export const SelectDinamic = ({ sendProps, property, properties }) => {
               <span
                 className="option-delete"
                 onClick={() => {
-                  newOptionSelected(optionsSelected)
+                  deleteOption(true, optionsSelected)
                 }}>
                 <CloseCircleOutlined />
               </span>
@@ -68,7 +84,7 @@ export const SelectDinamic = ({ sendProps, property, properties }) => {
                 <span
                   className="option-delete"
                   onClick={() => {
-                    deleteOption(option)
+                    deleteOption(false, option)
                   }}>
                   <CloseCircleOutlined />
                 </span>
@@ -86,11 +102,11 @@ export const SelectDinamic = ({ sendProps, property, properties }) => {
               type="text"
               placeholder="Nombre de la opción"
               value={nameOption}
-              onBlur={e => {
-                setEditMode(false)
-                setTimeout(() => {
-                  setSelectActive(false)
-                }, 100)
+              onBlur={() => {
+                // setEditMode(false)
+                // setTimeout(() => {
+                //   setSelectActive(false)
+                // }, 100)
               }}
               onKeyDown={e => {
                 if (e.key !== 'Enter') return

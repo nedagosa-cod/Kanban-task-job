@@ -8,18 +8,25 @@ import { useState } from 'react'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { SelectDinamic } from './elements/SelectDinamic'
+import Select from 'react-select'
 
 export default function PanelProperty({
-  type,
   property,
   properties,
-  updatePorperties,
-  sendProps,
+  updateProperty,
+  eventClickPanel,
 }) {
   const [editModeValue, setEditModeValue] = useState(false)
   const [editModeTitle, setEditModeTitle] = useState(false)
   const [mouseIsOver, setMouseIsOver] = useState(false)
 
+  const options = [
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' },
+  ]
+
+  // #region Componente de Encabezado
   const { setNodeRef, attributes, listeners, transform, transition } =
     useSortable({
       id: property.id,
@@ -33,8 +40,9 @@ export default function PanelProperty({
     transform: CSS.Transform.toString(transform),
     transition,
   }
+  // #endregion
 
-  switch (type) {
+  switch (property.type) {
     case 'text':
       return (
         <div
@@ -63,16 +71,16 @@ export default function PanelProperty({
                 autoFocus
                 name="title"
                 value={property.title}
-                id={property.id}
                 onBlur={() => {
                   setEditModeTitle(false)
                 }}
                 onKeyDown={e => {
                   if (e.key !== 'Enter') return
+                  updateProperty(e, property)
                   setEditModeTitle(false)
                 }}
                 className="panel-property__title--edit"
-                onChange={e => updatePorperties(e)}
+                onChange={e => updateProperty(e, property)}
               />
             )}
           </button>
@@ -86,13 +94,11 @@ export default function PanelProperty({
               className={editModeValue ? 'prop-input edit' : 'prop-input'}
               name="value"
               value={property.value}
-              data-type={type}
-              id={property.id}
               placeholder="Valor de la propiedad"
               onBlur={() => {
                 setEditModeValue(false)
               }}
-              onChange={e => updatePorperties(e)}
+              onChange={e => updateProperty(e, property)}
             />
           </label>
         </div>
@@ -125,16 +131,16 @@ export default function PanelProperty({
                 autoFocus
                 name="title"
                 value={property.title}
-                id={property.id}
                 onBlur={() => {
                   setEditModeTitle(false)
                 }}
                 onKeyDown={e => {
                   if (e.key !== 'Enter') return
+                  updateProperty(e, property)
                   setEditModeTitle(false)
                 }}
                 className="panel-property__title--edit"
-                onChange={e => updatePorperties(e)}
+                onChange={e => updateProperty(e, property)}
               />
             )}
           </button>
@@ -152,13 +158,11 @@ export default function PanelProperty({
               name="value"
               type="date"
               value={property.value}
-              data-type={type}
-              id={property.id}
               placeholder="Valor de la propiedad"
               onBlur={() => {
                 setEditModeValue(false)
               }}
-              onChange={e => updatePorperties(e)}
+              onChange={e => updateProperty(e, property)}
             />
           </label>
         </div>
@@ -178,7 +182,7 @@ export default function PanelProperty({
           <div className="panel-property__drag" {...attributes} {...listeners}>
             {mouseIsOver && <IconPropMenu style={{ stroke: '#fff' }} />}
           </div>
-          {/* {campo diferente} */}
+          {/* {left element} */}
           <button
             className="panel-property__title"
             onClick={() => {
@@ -200,17 +204,20 @@ export default function PanelProperty({
                   setEditModeTitle(false)
                 }}
                 className="panel-property__title--edit"
-                onChange={e => updatePorperties(e)}
+                onChange={e => updateProperty(e, property)}
               />
             )}
           </button>
-          {/* { END campo diferente} */}
-
+          {/* { END left element} */}
+          {/* {right element} */}
+          {/* <Select options={options} /> */}
           <SelectDinamic
-            sendProps={sendProps}
+            updateProperty={updateProperty}
             property={property}
             properties={properties}
+            eventClickPanel={eventClickPanel}
           />
+          {/* {END right element} */}
         </div>
       )
     default:
@@ -250,7 +257,7 @@ export default function PanelProperty({
                   setEditModeTitle(false)
                 }}
                 className="panel-property__title--edit"
-                onChange={e => updatePorperties(e)}
+                onChange={e => updateProperty(e, property)}
               />
             )}
           </button>
@@ -264,7 +271,7 @@ export default function PanelProperty({
             onBlur={() => {
               setEditModeValue(false)
             }}
-            onChange={e => updatePorperties(e)}
+            onChange={e => updateProperty(e, property)}
           />
         </div>
       )

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import IconTrash from '../icons/iconTrash'
 import IconMenu from '../icons/IconMenu'
 import { useSortable } from '@dnd-kit/sortable'
@@ -10,15 +10,10 @@ import {
   EditOutlined,
   FullscreenOutlined,
 } from '@ant-design/icons'
+import KanbanContext from '../context/KanbanContext'
 
-export default function TaskCard({
-  task,
-  deleteTask,
-  updateTask,
-  createTask,
-  openPanelTask,
-  color,
-}) {
+export default function TaskCard({ task, openPanelTask, color }) {
+  const { updateTask, deleteTask, createTask } = useContext(KanbanContext)
   const [mouseIsOver, setMouseIsOver] = useState(false)
   const [editMode, setEditMode] = useState(false)
 
