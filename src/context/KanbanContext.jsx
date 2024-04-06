@@ -7,22 +7,22 @@ const KanbanProvider = ({ children }) => {
     {
       id: 'a',
       title: 'Back Log',
-      color: 'gris',
+      color: 'blanco',
     },
     {
       id: 'b',
       title: 'Paused',
-      color: 'naranja',
+      color: 'blanco',
     },
     {
       id: 'c',
       title: 'Doing',
-      color: 'azul',
+      color: 'blanco',
     },
     {
       id: 'd',
       title: 'Done',
-      color: 'verde',
+      color: 'blanco',
     },
   ])
   const [tasks, setTasks] = useState([
@@ -126,6 +126,7 @@ const KanbanProvider = ({ children }) => {
     if (task) {
       let newTask = {
         id: Math.floor(Math.random() * 10001),
+        comments: [],
         columnId,
         content: task.content,
         properties: task.properties,
@@ -135,6 +136,7 @@ const KanbanProvider = ({ children }) => {
     } else {
       let newTask = {
         id: Math.floor(Math.random() * 10001),
+        comments: [],
         columnId,
         content: `Task ${tasks.length + 1}`,
         properties: [],

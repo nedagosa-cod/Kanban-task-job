@@ -18,7 +18,6 @@ export default function ColumnContainer({
 }) {
   const { createTask } = useContext(KanbanContext)
   const [editMode, setEditMode] = useState(false)
-  const [mouseIsOver, setMouseIsOver] = useState(false)
   const tasksIds = useMemo(() => {
     return tasks.map(task => task.id)
   }, [tasks])
@@ -38,6 +37,7 @@ export default function ColumnContainer({
     disabled: editMode,
   })
   const columColors = {
+    blanco: '#f8f9fa',
     gris: '#7C7C7C',
     rojo: '#E41B1B',
     naranja: '#E4861B',
@@ -46,6 +46,7 @@ export default function ColumnContainer({
     azul: '#1B7CE4',
     morado: '#9E1BE4',
     fuccia: '#E41BB0',
+    negro: '#212529',
   }
   const items = [
     {
@@ -61,7 +62,7 @@ export default function ColumnContainer({
       key: '2',
       icon: <WalletFilled style={{ color: columColors.gris }} />,
       label: (
-        <button className="button-color" style={{ color: '#fff' }}>
+        <button className="button-color" style={{ color: columColors.negro }}>
           Gris
         </button>
       ),
@@ -71,7 +72,7 @@ export default function ColumnContainer({
       key: '3',
       icon: <WalletFilled style={{ color: columColors.rojo }} />,
       label: (
-        <button className="button-color" style={{ color: '#fff' }}>
+        <button className="button-color" style={{ color: columColors.negro }}>
           Rojo
         </button>
       ),
@@ -81,7 +82,7 @@ export default function ColumnContainer({
       key: '4',
       icon: <WalletFilled style={{ color: columColors.naranja }} />,
       label: (
-        <button className="button-color" style={{ color: '#fff' }}>
+        <button className="button-color" style={{ color: columColors.negro }}>
           Naranja
         </button>
       ),
@@ -91,7 +92,7 @@ export default function ColumnContainer({
       key: '5',
       icon: <WalletFilled style={{ color: columColors.amarillo }} />,
       label: (
-        <button className="button-color" style={{ color: '#fff' }}>
+        <button className="button-color" style={{ color: columColors.negro }}>
           Amarillo
         </button>
       ),
@@ -101,7 +102,7 @@ export default function ColumnContainer({
       key: '6',
       icon: <WalletFilled style={{ color: columColors.verde }} />,
       label: (
-        <button className="button-color" style={{ color: '#fff' }}>
+        <button className="button-color" style={{ color: columColors.negro }}>
           Verde
         </button>
       ),
@@ -111,7 +112,7 @@ export default function ColumnContainer({
       key: '7',
       icon: <WalletFilled style={{ color: columColors.azul }} />,
       label: (
-        <button className="button-color" style={{ color: '#fff' }}>
+        <button className="button-color" style={{ color: columColors.negro }}>
           Azul
         </button>
       ),
@@ -121,7 +122,7 @@ export default function ColumnContainer({
       key: '8',
       icon: <WalletFilled style={{ color: columColors.morado }} />,
       label: (
-        <button className="button-color" style={{ color: '#fff' }}>
+        <button className="button-color" style={{ color: columColors.negro }}>
           Morado
         </button>
       ),
@@ -131,7 +132,7 @@ export default function ColumnContainer({
       key: '9',
       icon: <WalletFilled style={{ color: columColors.fuccia }} />,
       label: (
-        <button className="button-color" style={{ color: columColors.fuccia }}>
+        <button className="button-color" style={{ color: columColors.negro }}>
           Fuccia
         </button>
       ),
@@ -150,7 +151,7 @@ export default function ColumnContainer({
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    background: columColors[column.color] + '21',
+    // background: columColors[column.color] + '21',
   }
 
   if (isDragging) {
@@ -168,13 +169,7 @@ export default function ColumnContainer({
       <div
         {...attributes}
         {...listeners}
-        className="column-container__box-title"
-        onMouseEnter={() => {
-          setMouseIsOver(true)
-        }}
-        onMouseLeave={() => {
-          setMouseIsOver(false)
-        }}>
+        className="column-container__box-title">
         <div
           style={{ background: columColors[column.color] }}
           className="column-container__box-title--title"
@@ -203,30 +198,28 @@ export default function ColumnContainer({
           )}
         </div>
 
-        {mouseIsOver && (
-          <div className="column-container__box-title--btn-trash">
-            <button
-              onClick={() => {
-                deleteColumn(column.id)
-              }}
-              className="button">
-              <IconTrash style={{ stroke: columColors[column.color] }} />
-            </button>
+        <div className="column-container__box-title--btn-trash">
+          <button
+            onClick={() => {
+              deleteColumn(column.id)
+            }}
+            className="button">
+            <IconTrash style={{ stroke: columColors[column.color] }} />
+          </button>
 
-            <Dropdown
-              menu={{
-                items,
-                onClick: handleMenuItemClick,
-              }}
-              trigger={['click']}
-              overlayClassName="dropdown-content"
-              placement="bottom">
-              <button className="button">
-                <IconMenu style={{ stroke: columColors[column.color] }} />
-              </button>
-            </Dropdown>
-          </div>
-        )}
+          <Dropdown
+            menu={{
+              items,
+              onClick: handleMenuItemClick,
+            }}
+            trigger={['click']}
+            overlayClassName="dropdown-content"
+            placement="bottom">
+            <button className="button">
+              <IconMenu style={{ stroke: columColors[column.color] }} />
+            </button>
+          </Dropdown>
+        </div>
       </div>
 
       {/* Column task container */}

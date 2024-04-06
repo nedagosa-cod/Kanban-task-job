@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 * {
   margin: 0;
@@ -23,7 +23,7 @@ body {
   font-size: 100%;
   /* background: linear-gradient(110deg, #312d3f 0.06%, #26233f);
   background-image: url("/background.jpg"); */
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 a {
@@ -78,10 +78,4 @@ label {
   -moz-hyphens: none;
   -ms-hyphens: none;
   outline: none;
-}
-
-.app {
-  width: 100%;
-  display: flex;
-  min-height: 100vh;
 }

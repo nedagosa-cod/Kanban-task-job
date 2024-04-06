@@ -6,9 +6,8 @@ import parse from 'html-react-parser'
 
 const CommentsSide = ({ task }) => {
   const [creatingComment, setCreatingComment] = useState(false)
-  const [activeDescription, setActiveDescription] = useState(
-    task.comments.lenght > 0 ? task.comments[0].content : []
-  )
+  const [activeComments, setActiveComments] = useState(task.comments)
+  const [quillValue, setQuillValue] = useState('')
   const module = {
     toolbar: [
       ['bold', 'italic', 'underline'], // toggled buttons
@@ -16,18 +15,30 @@ const CommentsSide = ({ task }) => {
     ],
   }
 
-  const updateCommet = () => {
-    if (creatingComment) {
+  const createComment = () => {
+    console.log(activeComments)
+    if (!creatingComment) {
+      setCreatingComment(true)
+    } else {
+      let newComment = [
+        ...activeComments,
+        {
+          id: activeComments.length + 1,
+          date: '01/01/1999',
+          content: quillValue,
+        },
+      ]
+      setActiveComments(newComment)
+      setCreatingComment(false)
+      setQuillValue('')
     }
   }
-
+  const updateComment = value => {
+    setQuillValue(value)
+  }
   return (
     <>
-      <button
-        className="bookmarkBtn"
-        onClick={() => {
-          setCreatingComment(true)
-        }}>
+      <button className="bookmarkBtn" onClick={createComment}>
         <span className="IconContainer">
           {!creatingComment && <IconComment />}
           {creatingComment && <IconSend />}
@@ -39,17 +50,16 @@ const CommentsSide = ({ task }) => {
         <div className="box-quill">
           <ReactQuill
             theme="snow"
-            value={activeDescription}
+            value={quillValue}
             modules={module}
-            onChange={e => {
-              console.log(e)
-              setActiveDescription(e)
+            onChange={value => {
+              updateComment(value)
             }}
           />
         </div>
       )}
       <div className="comments">
-        {task.comments.map((comment, i) => {
+        {activeComments.map((comment, i) => {
           return (
             <section className="box-comment" key={i}>
               <article className="box-comment__content">

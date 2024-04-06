@@ -9,16 +9,24 @@ $color8: #e9ecef;
 $color9: #f8f9fa;
 
 .kanban-container {
+  position: relative;
+  z-index: 10;
   display: flex;
   gap: 1.6rem;
-  width: 100%;
-  max-height: 600px;
+  width: 50%;
+  // max-height: 600px;
   flex-grow: 1;
   overflow-x: auto;
   padding: 2rem;
   scrollbar-width: thin;
   scrollbar-color: $color2 $color8;
-
+  /* From https://css.glass */
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(1rem);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   & .column-container {
     display: flex;
     flex-direction: column;
@@ -26,10 +34,11 @@ $color9: #f8f9fa;
     min-height: 500px;
     padding: 0.2rem 1.2rem;
     width: 350px;
-    color: rgb(203 213 225 / 0.9);
+    // color: rgb(203 213 225 / 0.9);
+    color: $color2;
     font-size: 1.6rem;
     cursor: pointer;
-    // background-color: #3d3d3d21;
+    background-color: $color8;
     box-shadow: inset 0 1px 0 0 #ffffff0d;
     border: 1px solid rgba(194, 194, 194, 0.1);
     border-radius: 1.2rem;
@@ -48,6 +57,7 @@ $color9: #f8f9fa;
 
       &--title {
         display: flex;
+        color: $color3;
         // background: #a80f0f;
         padding: 0.4rem 0.8rem;
         box-shadow: inset 0 1px 0 0 #ffffff0d;
@@ -87,9 +97,9 @@ $color9: #f8f9fa;
       overflow-x: hidden;
       overflow-y: auto;
       scrollbar-width: thin;
-
       & .task {
         // background: #af202091;
+        box-shadow: 0px 5px 5px -4px rgba(0, 0, 0, 0.1);
         padding: 0.8rem;
         height: auto;
         min-height: 60px;
@@ -100,9 +110,10 @@ $color9: #f8f9fa;
         font-size: 1.4rem;
         justify-content: space-between;
         cursor: pointer;
+        border: 2px solid $color9;
 
         &:hover {
-          border: 2px solid $color1;
+          border: 2px solid $color5;
         }
 
         &__btn {
@@ -128,18 +139,6 @@ $color9: #f8f9fa;
           justify-content: center;
         }
 
-        // & .textarea {
-        //       height: 90%;
-        //       width: 100%;
-        //       resize: none;
-        //       border: none;
-        //       color: $color1;
-
-        //       &:focus {
-        //             outline: none;
-        //       }
-        // }
-
         &.is-dragging {
           height: auto;
           min-height: 60px;
@@ -158,12 +157,11 @@ $color9: #f8f9fa;
           position: relative;
           border: 1px solid green;
         }
-
-        border-radius: 1.2rem;
-        -webkit-border-radius: 1.2rem;
-        -moz-border-radius: 1.2rem;
-        -ms-border-radius: 1.2rem;
-        -o-border-radius: 1.2rem;
+        border-radius: 0.8rem;
+        -webkit-border-radius: 0.8rem;
+        -moz-border-radius: 0.8rem;
+        -ms-border-radius: 0.8rem;
+        -o-border-radius: 0.8rem;
       }
     }
 
@@ -258,6 +256,7 @@ $color9: #f8f9fa;
 
 .panel-bx-task {
   position: absolute;
+  z-index: 20;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -278,7 +277,7 @@ $color9: #f8f9fa;
     margin: auto;
     padding: 1rem;
     /* From https://css.glass */
-    background: #f8f9fa7e;
+    background: $color9;
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(5px);
@@ -328,6 +327,7 @@ $color9: #f8f9fa;
         flex-direction: column;
         align-items: center;
         gap: 1.8rem;
+        width: 100%;
       }
     }
     &__title {
@@ -611,6 +611,7 @@ $color9: #f8f9fa;
     }
     & .box-comment {
       position: relative;
+      width: 100%;
       &__content {
         font-size: 1.2rem;
         background: $color7;
@@ -667,7 +668,7 @@ $color9: #f8f9fa;
 
 .dropdown-content {
   & .ant-dropdown-menu {
-    background: #454353;
+    background: $color9;
   }
   & .ant-dropdown-menu-item-active {
     opacity: 0.9;
@@ -713,6 +714,8 @@ $color9: #f8f9fa;
 .IconContainer {
   width: 30px;
   height: 30px;
+  user-select: none;
+  pointer-events: none;
   background-color: $color1;
   border-radius: 50%;
   display: flex;
