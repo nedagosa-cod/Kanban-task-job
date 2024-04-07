@@ -114,6 +114,7 @@ $color9: #f8f9fa;
         & p {
           text-wrap: pretty;
           width: fit-content;
+          user-select: none;
         }
         &:hover {
           border: 2px solid $color5;
