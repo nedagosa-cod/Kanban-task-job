@@ -797,3 +797,19 @@ $color9: #f8f9fa;
   transform: scale(0.95);
   transition-duration: 0.3s;
 }
+
+@media only screen and (min-width: 300px) and (max-width: 620px) {
+  .panel-bx-task {
+    & .panel {
+      width: 95%;
+      flex-direction: column;
+      & .left {
+        width: 100%;
+        padding: 0.8rem;
+      }
+      & .right {
+        width: 100%;
+      }
+    }
+  }
+}
