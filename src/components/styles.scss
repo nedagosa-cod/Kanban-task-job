@@ -396,6 +396,7 @@ $color9: #f8f9fa;
         justify-content: center;
         display: flex;
         cursor: grab;
+        outline: none;
         // width: 3rem;
         width: 4%;
         min-width: 3.2rem;
@@ -518,7 +519,6 @@ $color9: #f8f9fa;
         background: $color8;
         color: $color1;
         &.true {
-          background: rgba(255, 255, 255, 0.2);
           border-radius: 0.6rem;
           -webkit-border-radius: 0.6rem;
           -moz-border-radius: 0.6rem;
@@ -824,9 +824,7 @@ $color9: #f8f9fa;
       & .left {
         width: 100%;
         padding: 0.8rem;
-        &__box-props {
-          overflow: hidden;
-        }
+        border: none;
       }
       & .right {
         width: 100%;
@@ -840,13 +838,15 @@ $color9: #f8f9fa;
 @media only screen and (min-width: 620px) and (max-width: 1080px) {
   .panel-bx-task {
     & .panel {
+      padding: 4rem;
       width: 95%;
       flex-direction: column;
       & .left {
         width: 100%;
         padding: 0.8rem;
+        border: none;
         &__box-props {
-          overflow: hidden;
+          overflow-x: hidden;
         }
       }
       & .right {

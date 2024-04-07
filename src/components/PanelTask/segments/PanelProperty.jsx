@@ -8,7 +8,7 @@ import { useState } from 'react'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { SelectDinamic } from './elements/SelectDinamic'
-import Select from 'react-select'
+import PropDrag from './elements/PropDrag'
 
 export default function PanelProperty({
   property,
@@ -55,9 +55,7 @@ export default function PanelProperty({
           onMouseLeave={() => {
             setMouseIsOver(false)
           }}>
-          <div className="panel-property__drag" {...attributes} {...listeners}>
-            <IconPropMenu style={{ stroke: '#fff' }} />
-          </div>
+          <PropDrag property={property} />
 
           <button
             className="panel-property__title"
@@ -115,9 +113,7 @@ export default function PanelProperty({
           onMouseLeave={() => {
             setMouseIsOver(false)
           }}>
-          <div className="panel-property__drag" {...attributes} {...listeners}>
-            <IconPropMenu style={{ stroke: '#fff' }} />
-          </div>
+          <PropDrag property={property} />
           {/* {campo diferente} */}
           <button
             className="panel-property__title"
@@ -179,9 +175,7 @@ export default function PanelProperty({
           onMouseLeave={() => {
             setMouseIsOver(false)
           }}>
-          <div className="panel-property__drag" {...attributes} {...listeners}>
-            <IconPropMenu style={{ stroke: '#fff' }} />
-          </div>
+          <PropDrag property={property} />
           {/* {left element} */}
           <button
             className="panel-property__title"
@@ -232,9 +226,7 @@ export default function PanelProperty({
           onMouseLeave={() => {
             setMouseIsOver(false)
           }}>
-          <div className="panel-property__drag" {...attributes} {...listeners}>
-            <IconPropMenu style={{ stroke: '#fff' }} />
-          </div>
+          <PropDrag property={property} />
 
           <button
             className="panel-property__title"

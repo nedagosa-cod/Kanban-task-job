@@ -3,6 +3,7 @@ import { createContext, useState } from 'react'
 const KanbanContext = createContext()
 
 const KanbanProvider = ({ children }) => {
+  const [colorUser, setColorUser] = useState('#e9ecef')
   const [columns, setColumns] = useState([
     {
       id: 'a',
@@ -30,6 +31,7 @@ const KanbanProvider = ({ children }) => {
       id: '1',
       columnId: 'a',
       content: 'Tarea 1 de columna A',
+      color: 'blanco',
       properties: [
         {
           id: '1',
@@ -71,6 +73,7 @@ const KanbanProvider = ({ children }) => {
       id: '2',
       columnId: 'a',
       content: 'Tarea 2 de columna A',
+      color: 'blanco',
       properties: [
         {
           id: '1',
@@ -98,6 +101,7 @@ const KanbanProvider = ({ children }) => {
       id: '3',
       columnId: 'b',
       content: 'Tarea 2 de columna B',
+      color: 'blanco',
       properties: [
         {
           id: '1',
@@ -188,6 +192,8 @@ const KanbanProvider = ({ children }) => {
     updateTask,
     deleteTask,
     createTask,
+    setColorUser,
+    colorUser,
   }
 
   return (

@@ -16,18 +16,17 @@ import PanelTask from './PanelTask/PanelTask'
 import KanbanContext from '../context/KanbanContext'
 
 export default function KanbanBoard() {
-  const { tasks, setTasks, columns, setColumns } = useContext(KanbanContext)
+  const { tasks, setTasks, columns, setColumns, setColorUser, colorUser } =
+    useContext(KanbanContext)
 
   const [activeColumn, setActiveColumn] = useState(null)
   const [activeTask, setActiveTask] = useState(tasks)
 
   const [activePanel, setActivePanel] = useState(false)
   const [dataPanel, setDataPanel] = useState({})
+  // const [colorUser, setColorUser] = useState('#e9ecef')
 
   const columnsId = useMemo(() => columns.map(col => col.id), [columns])
-  const tasksIds = useMemo(() => {
-    return tasks.map(task => task.id)
-  }, [tasks])
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -37,6 +36,9 @@ export default function KanbanBoard() {
     })
   )
   const onDragStart = event => {
+    // let taskSelected = event.active.data.current.task
+    // console.log(taskSelected)
+    // updateTask(taskSelected.id, taskSelected.content.taskSelected.color)
     if (event.active.data.current?.type === 'Column') {
       setActiveColumn(event.active.data.current.column)
       return
@@ -116,11 +118,26 @@ export default function KanbanBoard() {
     setTasks(newTasks)
   }
   const updateColumn = (id, title, color) => {
+    console.log(id)
+    console.log(title)
+    console.log(color)
     const newColumns = columns.map(col => {
       if (col.id !== id) return col
       return { ...col, title, color }
     })
+    setColorUser(color)
     setColumns(newColumns)
+  }
+  const updateTask = (id, title, color) => {
+    console.log(id)
+    console.log(title)
+    console.log(color)
+    const newTasks = tasks.map(taskk => {
+      if (taskk.id !== id) return taskk
+      return { ...taskk, title, color }
+    })
+    setColorUser(color)
+    setTasks(newTasks)
   }
   const createNewColumn = () => {
     const columnToAdd = {
@@ -143,6 +160,31 @@ export default function KanbanBoard() {
     }
   }
 
+  const columColors = {
+    blanco: '#f8f9fa',
+    gris: '#cfcfcf',
+    rojo: '#ffcdcd',
+    naranja: '#ffead2',
+    amarillo: '#fff9ca',
+    verde: '#ccffd7',
+    azul: '#cfe6ff',
+    morado: '#efd2ff',
+    fuccia: '#ffd1f3',
+    negro: '#afafaf',
+    heavy: {
+      blanco: '#f8f9fa',
+      gris: '#ababab',
+      rojo: '#f93f3f',
+      naranja: '#ffa339',
+      amarillo: '#ffea46',
+      verde: '#56ff7a',
+      azul: '#3f9bff',
+      morado: '#be47ff',
+      fuccia: '#ff4dd1',
+      negro: '#373737',
+    },
+  }
+
   return (
     <div className="kanban-container">
       <DndContext
@@ -159,8 +201,10 @@ export default function KanbanBoard() {
                   column={column}
                   tasks={tasks.filter(task => task.columnId === column.id)}
                   updateColumn={updateColumn}
+                  updateTask={updateTask}
                   deleteColumn={deleteColumn}
                   openPanelTask={openPanelTask}
+                  columColors={columColors}
                 />
               ))}
             </SortableContext>
@@ -182,10 +226,11 @@ export default function KanbanBoard() {
               tasks={tasks.filter(task => task.columnId === activeColumn.id)}
             />
           )}
+
           {activeTask && (
             <TaskCard
               task={activeTask}
-              color="#f8f9fa"
+              color={columColors[tasks]}
               styles={{
                 boxShadow: '0px 5px 5px -4px rgba(0, 0, 0, 0.1)',
                 padding: '0.4rem 1rem',

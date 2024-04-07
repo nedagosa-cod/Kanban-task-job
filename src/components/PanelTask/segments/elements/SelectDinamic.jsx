@@ -37,7 +37,7 @@ export const SelectDinamic = ({
   useEffect(() => {
     //cierra el select dinamico
     document.addEventListener('click', e => {
-      !$selectDianamic.current.contains(e.target) && setSelectActive(false)
+      !$selectDianamic.current?.contains(e.target) && setSelectActive(false)
     })
   }, [])
   return (

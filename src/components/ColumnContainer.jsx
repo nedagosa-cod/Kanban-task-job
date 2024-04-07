@@ -14,6 +14,7 @@ export default function ColumnContainer({
   column,
   tasks,
   updateColumn,
+  updateTask,
   deleteColumn,
   openPanelTask,
 }) {
@@ -39,19 +40,31 @@ export default function ColumnContainer({
   })
   const columColors = {
     blanco: '#f8f9fa',
-    gris: '#7C7C7C',
-    rojo: '#E41B1B',
-    naranja: '#E4861B',
-    amarillo: '#E4CC1B',
-    verde: '#008a20',
-    azul: '#1B7CE4',
-    morado: '#9E1BE4',
-    fuccia: '#E41BB0',
-    negro: '#212529',
+    gris: '#cfcfcf',
+    rojo: '#ffcdcd',
+    naranja: '#ffead2',
+    amarillo: '#fff9ca',
+    verde: '#ccffd7',
+    azul: '#cfe6ff',
+    morado: '#efd2ff',
+    fuccia: '#ffd1f3',
+    negro: '#afafaf',
+    heavy: {
+      blanco: '#f8f9fa',
+      gris: '#ababab',
+      rojo: '#f93f3f',
+      naranja: '#ffa339',
+      amarillo: '#ffea46',
+      verde: '#56ff7a',
+      azul: '#3f9bff',
+      morado: '#be47ff',
+      fuccia: '#ff4dd1',
+      negro: '#373737',
+    },
   }
   const items = [
     {
-      key: '1',
+      key: 1,
       icon: <DeleteOutlined />,
       danger: true,
       label: <button rel="noopener noreferrer">Eliminar Columna</button>,
@@ -60,80 +73,97 @@ export default function ColumnContainer({
       type: 'divider',
     },
     {
-      key: '2',
-      icon: <WalletFilled style={{ color: columColors.gris }} />,
+      key: 2,
+      icon: <WalletFilled style={{ color: columColors.heavy.gris }} />,
       label: (
-        <button className="button-color" style={{ color: columColors.negro }}>
+        <button
+          className="button-color"
+          style={{ color: columColors.heavy.gris }}>
+          {/* {console.log(columColors.heavy.gris)} */}
           Gris
         </button>
       ),
       disabled: false,
     },
     {
-      key: '3',
-      icon: <WalletFilled style={{ color: columColors.rojo }} />,
+      key: 3,
+      icon: <WalletFilled style={{ color: columColors.heavy.rojo }} />,
       label: (
-        <button className="button-color" style={{ color: columColors.negro }}>
+        <button
+          className="button-color"
+          style={{ color: columColors.heavy.rojo }}>
           Rojo
         </button>
       ),
       disabled: false,
     },
     {
-      key: '4',
-      icon: <WalletFilled style={{ color: columColors.naranja }} />,
+      key: 4,
+      icon: <WalletFilled style={{ color: columColors.heavy.naranja }} />,
       label: (
-        <button className="button-color" style={{ color: columColors.negro }}>
+        <button
+          className="button-color"
+          style={{ color: columColors.heavy.naranja }}>
           Naranja
         </button>
       ),
       disabled: false,
     },
     {
-      key: '5',
-      icon: <WalletFilled style={{ color: columColors.amarillo }} />,
+      key: 5,
+      icon: <WalletFilled style={{ color: columColors.heavy.amarillo }} />,
       label: (
-        <button className="button-color" style={{ color: columColors.negro }}>
+        <button
+          className="button-color"
+          style={{ color: columColors.heavy.amarillo }}>
           Amarillo
         </button>
       ),
       disabled: false,
     },
     {
-      key: '6',
-      icon: <WalletFilled style={{ color: columColors.verde }} />,
+      key: 6,
+      icon: <WalletFilled style={{ color: columColors.heavy.verde }} />,
       label: (
-        <button className="button-color" style={{ color: columColors.negro }}>
+        <button
+          className="button-color"
+          style={{ color: columColors.heavy.verde }}>
           Verde
         </button>
       ),
       disabled: false,
     },
     {
-      key: '7',
-      icon: <WalletFilled style={{ color: columColors.azul }} />,
+      key: 7,
+      icon: <WalletFilled style={{ color: columColors.heavy.azul }} />,
       label: (
-        <button className="button-color" style={{ color: columColors.negro }}>
+        <button
+          className="button-color"
+          style={{ color: columColors.heavy.azul }}>
           Azul
         </button>
       ),
       disabled: false,
     },
     {
-      key: '8',
-      icon: <WalletFilled style={{ color: columColors.morado }} />,
+      key: 8,
+      icon: <WalletFilled style={{ color: columColors.heavy.morado }} />,
       label: (
-        <button className="button-color" style={{ color: columColors.negro }}>
+        <button
+          className="button-color"
+          style={{ color: columColors.heavy.morado }}>
           Morado
         </button>
       ),
       disabled: false,
     },
     {
-      key: '9',
-      icon: <WalletFilled style={{ color: columColors.fuccia }} />,
+      key: 9,
+      icon: <WalletFilled style={{ color: columColors.heavy.fuccia }} />,
       label: (
-        <button className="button-color" style={{ color: columColors.negro }}>
+        <button
+          className="button-color"
+          style={{ color: columColors.heavy.fuccia }}>
           Fuccia
         </button>
       ),
@@ -141,10 +171,13 @@ export default function ColumnContainer({
     },
   ]
 
-  const handleMenuItemClick = ({ key }) => {
+  const clickMenuColor = ({ key }) => {
     const keysArray = Object.keys(columColors)
     if (key > 1) {
-      updateColumn(column.id, column.title, keysArray[key - 2])
+      updateColumn(column.id, column.title, keysArray[key - 1])
+      tasks.forEach(tarea => {
+        updateTask(tarea.id, tarea.content, keysArray[key - 1])
+      })
     } else {
       deleteColumn(column.id)
     }
@@ -152,7 +185,7 @@ export default function ColumnContainer({
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    // background: columColors[column.color] + '21',
+    border: '4px solid ' + columColors.heavy[column.color],
   }
 
   if (isDragging) {
@@ -212,7 +245,7 @@ export default function ColumnContainer({
           <Dropdown
             menu={{
               items,
-              onClick: handleMenuItemClick,
+              onClick: clickMenuColor,
             }}
             trigger={['click']}
             overlayClassName="dropdown-content"
@@ -246,11 +279,6 @@ export default function ColumnContainer({
         }}>
         <IconPlus /> Agregar Tarea
       </button>
-      {/* <DragOverlay>
-        <div className="second-task">
-          <TaskCard />
-        </div>
-      </DragOverlay> */}
     </div>
   )
 }
