@@ -1,5 +1,5 @@
 import { CloseCircleOutlined } from '@ant-design/icons'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export const SelectDinamic = ({
   updateProperty,
@@ -12,6 +12,7 @@ export const SelectDinamic = ({
   const [selectActive, setSelectActive] = useState(false)
   const [placeholder, setPlaceholder] = useState(true)
   const [editMode, setEditMode] = useState(false)
+  const $selectDianamic = useRef(null)
 
   const deleteOption = (title, listDelete) => {
     if (title) {
@@ -32,25 +33,23 @@ export const SelectDinamic = ({
       value: newValueOption,
     })
   }
-  const execute = () => {
-    setEditMode(false)
-    setTimeout(() => {
-      setSelectActive(false)
-    }, 100)
-    console.log('sirve') // arreglando que cuando el panel sea clikeado me cierre el selectDianmic
-  }
-  eventClickPanel(execute)
 
+  useEffect(() => {
+    //cierra el select dinamico
+    document.addEventListener('click', e => {
+      !$selectDianamic.current.contains(e.target) && setSelectActive(false)
+    })
+  }, [])
   return (
-    <div className={'SelectDinamic ' + selectActive}>
+    <div className={'SelectDinamic ' + selectActive} ref={$selectDianamic}>
       <label
         className={'SelectDinamic__label ' + selectActive}
         onClick={() => {
           setSelectActive(true)
         }}>
-        <div className="SelectDinamic__option-content">
+        <div className="SelectDinamic__option-content ">
           {!selectActive && placeholder && !optionsSelected && (
-            <p className="SelectDinamic__option-content--placeholder">
+            <p className="SelectDinamic__option-content--placeholder ">
               Lista deplegable
             </p>
           )}

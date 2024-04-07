@@ -21,7 +21,6 @@ export default function PanelTask({ task, closePanelTask }) {
     description: task.description,
     comments: task.comments,
   })
-  console.log(dataTask)
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
