@@ -56,7 +56,7 @@ export default function PanelProperty({
             setMouseIsOver(false)
           }}>
           <div className="panel-property__drag" {...attributes} {...listeners}>
-            {mouseIsOver && <IconPropMenu style={{ stroke: '#fff' }} />}
+            <IconPropMenu style={{ stroke: '#fff' }} />
           </div>
 
           <button
@@ -116,7 +116,7 @@ export default function PanelProperty({
             setMouseIsOver(false)
           }}>
           <div className="panel-property__drag" {...attributes} {...listeners}>
-            {mouseIsOver && <IconPropMenu style={{ stroke: '#fff' }} />}
+            <IconPropMenu style={{ stroke: '#fff' }} />
           </div>
           {/* {campo diferente} */}
           <button
@@ -180,7 +180,7 @@ export default function PanelProperty({
             setMouseIsOver(false)
           }}>
           <div className="panel-property__drag" {...attributes} {...listeners}>
-            {mouseIsOver && <IconPropMenu style={{ stroke: '#fff' }} />}
+            <IconPropMenu style={{ stroke: '#fff' }} />
           </div>
           {/* {left element} */}
           <button
@@ -233,7 +233,7 @@ export default function PanelProperty({
             setMouseIsOver(false)
           }}>
           <div className="panel-property__drag" {...attributes} {...listeners}>
-            {mouseIsOver && <IconPropMenu style={{ stroke: '#fff' }} />}
+            <IconPropMenu style={{ stroke: '#fff' }} />
           </div>
 
           <button

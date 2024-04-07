@@ -372,9 +372,9 @@ $color9: #f8f9fa;
         margin-right: 0.8rem;
       }
       &:hover {
-        color: #ffffff;
+        color: $color1;
         opacity: 1;
-        background: rgba(255, 255, 255, 0.2);
+        background: $color7;
         border-radius: 0.6rem;
         -webkit-border-radius: 0.6rem;
         -moz-border-radius: 0.6rem;
@@ -382,7 +382,6 @@ $color9: #f8f9fa;
         -o-border-radius: 0.6rem;
       }
     }
-
     & .panel-property {
       display: flex;
       align-items: center;
@@ -396,11 +395,12 @@ $color9: #f8f9fa;
         align-items: center;
         justify-content: center;
         display: flex;
-        margin-right: 0.8rem;
         cursor: grab;
-        width: 3rem;
+        // width: 3rem;
+        width: 4%;
+        min-width: 3.2rem;
         height: 3rem;
-        opacity: 0.5;
+        opacity: 0.4;
         padding: 0.2rem;
         & svg {
           width: 2.4rem;
@@ -419,7 +419,9 @@ $color9: #f8f9fa;
       &__title {
         align-items: center;
         display: flex;
-        width: 20rem;
+        // width: 20rem;
+        width: 40%;
+        min-width: 16rem;
         font-size: 1.4rem;
         margin: 0 0.2rem;
         &:hover {
@@ -446,6 +448,7 @@ $color9: #f8f9fa;
         flex-grow: 1;
         height: 100%;
         font-size: 1.6rem;
+        background: $color8;
         &:hover {
           background: rgba(255, 255, 255, 0.2);
           border-radius: 0.6rem;
@@ -454,6 +457,11 @@ $color9: #f8f9fa;
           -ms-border-radius: 0.6rem;
           -o-border-radius: 0.6rem;
         }
+        border-radius: 0.8rem;
+        -webkit-border-radius: 0.8rem;
+        -moz-border-radius: 0.8rem;
+        -ms-border-radius: 0.8rem;
+        -o-border-radius: 0.8rem;
       }
     }
     & .panel-description {
@@ -507,6 +515,8 @@ $color9: #f8f9fa;
         width: 100%;
         max-width: 50rem;
         cursor: pointer;
+        background: $color8;
+        color: $color1;
         &.true {
           background: rgba(255, 255, 255, 0.2);
           border-radius: 0.6rem;
@@ -515,6 +525,11 @@ $color9: #f8f9fa;
           -ms-border-radius: 0.6rem;
           -o-border-radius: 0.6rem;
         }
+        border-radius: 0.8rem;
+        -webkit-border-radius: 0.8rem;
+        -moz-border-radius: 0.8rem;
+        -ms-border-radius: 0.8rem;
+        -o-border-radius: 0.8rem;
       }
       &__option-content {
         display: flex;
@@ -578,12 +593,6 @@ $color9: #f8f9fa;
           display: inline-block;
           background: $color8;
           margin: 0.2rem 0.6rem;
-          border-radius: 0.4rem;
-          -webkit-border-radius: 0.4rem;
-          -moz-border-radius: 0.4rem;
-          -ms-border-radius: 0.4rem;
-          -o-border-radius: 0.4rem;
-          border: 1px solid #6c757d;
           padding: 0.4rem 0.6rem;
           cursor: default;
           & .option-delete {
@@ -593,6 +602,7 @@ $color9: #f8f9fa;
             justify-content: center;
             width: fit-content;
             margin-right: 0.6rem;
+            color: $color4;
           }
           &:hover {
             transform: scale(1.01);
@@ -604,6 +614,11 @@ $color9: #f8f9fa;
             -moz-box-shadow: 0px 10px 28px -14px rgba(0, 0, 0, 0.75);
             box-shadow: 0px 10px 28px -14px rgba(0, 0, 0, 0.75);
           }
+          border-radius: 0.8rem;
+          -webkit-border-radius: 0.8rem;
+          -moz-border-radius: 0.8rem;
+          -ms-border-radius: 0.8rem;
+          -o-border-radius: 0.8rem;
         }
         & .content-option {
           display: flex;
@@ -809,9 +824,39 @@ $color9: #f8f9fa;
       & .left {
         width: 100%;
         padding: 0.8rem;
+        &__box-props {
+          overflow: hidden;
+        }
       }
       & .right {
         width: 100%;
+      }
+      & .panel-property {
+        right: 0;
+      }
+    }
+  }
+}
+@media only screen and (min-width: 620px) and (max-width: 1080px) {
+  .panel-bx-task {
+    & .panel {
+      width: 95%;
+      flex-direction: column;
+      & .left {
+        width: 100%;
+        padding: 0.8rem;
+        &__box-props {
+          overflow: hidden;
+        }
+      }
+      & .right {
+        width: 100%;
+      }
+      & .panel-property {
+        right: 0;
+      }
+      & .SelectDinamic {
+        min-width: 16rem;
       }
     }
   }
