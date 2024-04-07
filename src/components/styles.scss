@@ -48,6 +48,7 @@ $color9: #f8f9fa;
     -o-border-radius: 1.2rem;
 
     &__box-title {
+      outline: none;
       display: flex;
       height: 40px;
       align-items: center;
@@ -98,7 +99,6 @@ $color9: #f8f9fa;
       overflow-y: auto;
       scrollbar-width: thin;
       & .task {
-        // background: #af202091;
         box-shadow: 0px 5px 5px -4px rgba(0, 0, 0, 0.1);
         padding: 0.8rem;
         height: auto;
@@ -111,7 +111,9 @@ $color9: #f8f9fa;
         justify-content: space-between;
         cursor: pointer;
         border: 2px solid $color9;
-
+        & p {
+          text-wrap: pretty;
+        }
         &:hover {
           border: 2px solid $color5;
         }
@@ -137,25 +139,26 @@ $color9: #f8f9fa;
         &__menu {
           display: flex;
           justify-content: center;
+          color: $color1;
         }
-
+        // task back
         &.is-dragging {
-          height: auto;
-          min-height: 60px;
-          display: flex;
-          align-items: center;
-          text-align: left;
-          font-size: 1.4rem;
-          justify-content: space-between;
-          cursor: grab;
-
-          opacity: 0.3;
-          background: #3d3d3d;
-          padding: 0.8rem;
-          height: 10rem;
-          min-height: 10rem;
           position: relative;
-          border: 1px solid green;
+          border: 3px inset $color7;
+          // font-size: 1.4rem;
+          // min-height: 60px;
+          // display: flex;
+          // align-items: center;
+          // text-align: left;
+          // justify-content: space-between;
+          opacity: 0.3;
+          // height: 10rem;
+          // min-height: 10rem;
+        }
+        & .textarea {
+          width: 90%;
+          field-sizing: content;
+          resize: none;
         }
         border-radius: 0.8rem;
         -webkit-border-radius: 0.8rem;
@@ -175,7 +178,7 @@ $color9: #f8f9fa;
       outline: none;
 
       &:hover {
-        background: rgba(216, 216, 216, 0.1);
+        background: rgba(0, 0, 0, 0.1);
       }
 
       & svg {
@@ -214,7 +217,7 @@ $color9: #f8f9fa;
       width: 35rem;
       min-width: 35rem;
       cursor: pointer;
-      background: #3d3d3d;
+      background: $color6;
       font-size: 1.6rem;
       padding: 1.6rem;
       color: $color1;
@@ -291,22 +294,30 @@ $color9: #f8f9fa;
       border-right: 1px solid #adb5bd;
       padding: 2rem 3.4rem;
       & .textarea {
+        display: inline-block;
+
         resize: none;
-        height: 12rem;
-        width: 1080px;
+        width: 90%;
+        field-sizing: content;
+        max-height: 30rem;
+        min-height: fit-content;
+        // background: red;
         color: $color1;
         font-size: 3rem;
         overflow-y: hidden;
-        white-space: normal;
         margin-top: 0.6rem;
         cursor: pointer;
         white-space: normal;
+        padding: 0.8rem;
         // border: 1px solid red;
         &.edit {
           cursor: auto;
-          height: 12rem;
+          // height: 12rem;
           // max-height: 12rem;
         }
+      }
+      &__box-props {
+        min-height: 20rem;
       }
     }
     & .right {
@@ -334,12 +345,15 @@ $color9: #f8f9fa;
       display: flex;
       font-size: 3rem;
       color: $color1;
+      align-items: center;
+      height: fit;
+      min-height: 13rem;
+      // background: yellow;
       & svg {
         stroke: $color1;
-        width: 5rem;
-        height: 5rem;
-        margin-right: 1.2rem;
-        margin-bottom: 10rem;
+        width: 10%;
+        max-width: 4rem;
+        display: inline-block;
       }
       &--edit-mode {
         border: 1px solid $color1;
@@ -366,6 +380,7 @@ $color9: #f8f9fa;
         -o-border-radius: 0.6rem;
       }
     }
+
     & .panel-property {
       display: flex;
       align-items: center;

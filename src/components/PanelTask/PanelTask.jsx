@@ -128,7 +128,7 @@ export default function PanelTask({ task, closePanelTask }) {
             <PanelTitle dataTask={dataTask} updateTaskPanel={updateTaskPanel} />
 
             {/* {Propiedades} */}
-            <div>
+            <div className="left__box-props">
               <SortableContext items={propsIds}>
                 {properties.map(property => (
                   <PanelProperty
@@ -148,15 +148,6 @@ export default function PanelTask({ task, closePanelTask }) {
               task={dataTask}
               updateDescription={updateDescription}
             />
-
-            <button
-              onClick={() => {
-                console.log(dataTask.properties)
-                console.log(properties)
-                console.log(dataTask)
-              }}>
-              Test
-            </button>
           </div>
           <div className="right">
             <CommentsSide task={dataTask} />

@@ -1,29 +1,29 @@
-import { useState } from "react";
-import IconTask from "../../../icons/IconTask";
+import { useState } from 'react'
+import IconTask from '../../../icons/IconTask'
+
 export default function PanelTitle({ updateTaskPanel, dataTask }) {
-  const [editMode, setEditMode] = useState(false);
+  const [editMode, setEditMode] = useState(false)
 
   return (
-    <span
+    <div
       className="panel__title"
       onClick={() => {
-        setEditMode(true);
-      }}
-    >
+        setEditMode(true)
+      }}>
       <IconTask />
 
       <textarea
-        className={editMode ? "textarea edit" : "textarea"}
+        className={editMode ? 'textarea edit' : 'textarea'}
         value={dataTask.content}
         placeholder="Titulo de tarea"
         name="content"
         onBlur={() => {
-          setEditMode(false);
+          setEditMode(false)
         }}
-        onChange={(e) => {
-          updateTaskPanel(e);
+        onChange={e => {
+          updateTaskPanel(e)
         }}
       />
-    </span>
-  );
+    </div>
+  )
 }

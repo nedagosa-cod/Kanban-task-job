@@ -12,7 +12,7 @@ import {
 } from '@ant-design/icons'
 import KanbanContext from '../context/KanbanContext'
 
-export default function TaskCard({ task, openPanelTask, color }) {
+export default function TaskCard({ task, openPanelTask, color, styles }) {
   const { updateTask, deleteTask, createTask } = useContext(KanbanContext)
   const [mouseIsOver, setMouseIsOver] = useState(false)
   const [editMode, setEditMode] = useState(false)
@@ -69,6 +69,7 @@ export default function TaskCard({ task, openPanelTask, color }) {
     },
   ]
   const style = {
+    ...styles,
     transform: CSS.Transform.toString(transform),
     transition,
     background: color,
@@ -118,29 +119,6 @@ export default function TaskCard({ task, openPanelTask, color }) {
           }}
           onChange={e => updateTask(task.id, e.target.value)}
         />
-      </div>
-    )
-  }
-
-  return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-      className="task"
-      onClick={e => {
-        openPanelTask(e, task)
-      }}
-      onMouseEnter={() => {
-        setMouseIsOver(true)
-      }}
-      onMouseLeave={() => {
-        setMouseIsOver(false)
-      }}>
-      <p onClick={toggleEditMode}>{task.content}</p>
-
-      {mouseIsOver && (
         <div className="task__menu">
           <button
             onClick={() => {
@@ -163,7 +141,50 @@ export default function TaskCard({ task, openPanelTask, color }) {
             </button>
           </Dropdown>
         </div>
-      )}
+      </div>
+    )
+  }
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className="task"
+      onClick={e => {
+        openPanelTask(e, task)
+      }}
+      onMouseEnter={() => {
+        setMouseIsOver(true)
+      }}
+      onMouseLeave={() => {
+        setMouseIsOver(false)
+      }}>
+      <p onClick={toggleEditMode}>{task.content}</p>
+
+      <div className="task__menu">
+        <button
+          onClick={() => {
+            deleteTask(task.id)
+          }}
+          className="task__btn">
+          <IconTrash style={{ stroke: color }} />
+        </button>
+
+        <Dropdown
+          menu={{
+            items,
+            onClick: handleMenuItemClick,
+          }}
+          trigger={['click']}
+          overlayClassName="dropdown-content"
+          placement="bottom">
+          <button className="task__btn">
+            <IconMenu style={{ stroke: color }} />
+          </button>
+        </Dropdown>
+      </div>
     </div>
   )
 }

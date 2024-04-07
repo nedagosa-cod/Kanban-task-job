@@ -1,4 +1,5 @@
 import { SortableContext, useSortable } from '@dnd-kit/sortable'
+import { DragOverlay } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
 import IconTrash from '../icons/iconTrash'
 import TaskCard from './TaskCard'
@@ -155,6 +156,7 @@ export default function ColumnContainer({
   }
 
   if (isDragging) {
+    // parte de atras cuando cuando se alza el elemento
     return (
       <div
         ref={setNodeRef}
@@ -244,6 +246,11 @@ export default function ColumnContainer({
         }}>
         <IconPlus /> Agregar Tarea
       </button>
+      {/* <DragOverlay>
+        <div className="second-task">
+          <TaskCard />
+        </div>
+      </DragOverlay> */}
     </div>
   )
 }

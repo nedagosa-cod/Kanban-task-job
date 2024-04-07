@@ -139,7 +139,20 @@ const KanbanProvider = ({ children }) => {
         comments: [],
         columnId,
         content: `Task ${tasks.length + 1}`,
-        properties: [],
+        properties: [
+          {
+            id: 1,
+            type: 'text',
+            title: 'Titulo',
+            value: 'Text',
+          },
+          {
+            id: 2,
+            type: 'date',
+            title: 'Fecha',
+            value: '',
+          },
+        ],
         description: '',
       }
       setTasks([...tasks, newTask])

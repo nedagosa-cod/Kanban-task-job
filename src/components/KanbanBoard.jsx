@@ -19,12 +19,15 @@ export default function KanbanBoard() {
   const { tasks, setTasks, columns, setColumns } = useContext(KanbanContext)
 
   const [activeColumn, setActiveColumn] = useState(null)
-  const [activeTask, setActiveTask] = useState(null)
+  const [activeTask, setActiveTask] = useState(tasks)
 
   const [activePanel, setActivePanel] = useState(false)
   const [dataPanel, setDataPanel] = useState({})
 
   const columnsId = useMemo(() => columns.map(col => col.id), [columns])
+  const tasksIds = useMemo(() => {
+    return tasks.map(task => task.id)
+  }, [tasks])
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -176,15 +179,28 @@ export default function KanbanBoard() {
           {activeColumn && (
             <ColumnContainer
               column={activeColumn}
-              updateColumn={updateColumn}
               tasks={tasks.filter(task => task.columnId === activeColumn.id)}
             />
           )}
-
           {activeTask && (
-            <div className="second-task">
-              <TaskCard task={activeTask} />
-            </div>
+            <TaskCard
+              task={activeTask}
+              color="#f8f9fa"
+              styles={{
+                boxShadow: '0px 5px 5px -4px rgba(0, 0, 0, 0.1)',
+                padding: '0 0.8rem',
+                minHeight: '4rem',
+                display: 'flex',
+                alignItems: 'center',
+                position: 'relative',
+                textAlign: 'left',
+                fontSize: '1.4rem',
+                justifyContent: 'space-between',
+                border: '2px solid #343a40',
+                borderRadius: '0.8rem',
+                opacity: '0.8',
+              }}
+            />
           )}
         </DragOverlay>
       </DndContext>
