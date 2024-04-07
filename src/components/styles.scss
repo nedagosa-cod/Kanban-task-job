@@ -113,6 +113,7 @@ $color9: #f8f9fa;
         border: 2px solid $color9;
         & p {
           text-wrap: pretty;
+          width: fit-content;
         }
         &:hover {
           border: 2px solid $color5;
@@ -456,6 +457,20 @@ $color9: #f8f9fa;
     }
     & .panel-description {
       padding: 4rem 0;
+      & .quill {
+        border: none;
+        & .ql-toolbar {
+          border: none;
+        }
+        & .ql-container {
+          border: 1px inset $color3;
+          border-radius: 0.8rem;
+          -webkit-border-radius: 0.8rem;
+          -moz-border-radius: 0.8rem;
+          -ms-border-radius: 0.8rem;
+          -o-border-radius: 0.8rem;
+        }
+      }
       &__title {
         display: flex;
         align-items: center;

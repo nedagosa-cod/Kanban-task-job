@@ -14,7 +14,6 @@ import KanbanContext from '../context/KanbanContext'
 
 export default function TaskCard({ task, openPanelTask, color, styles }) {
   const { updateTask, deleteTask, createTask } = useContext(KanbanContext)
-  const [mouseIsOver, setMouseIsOver] = useState(false)
   const [editMode, setEditMode] = useState(false)
 
   const {
@@ -51,7 +50,7 @@ export default function TaskCard({ task, openPanelTask, color, styles }) {
       key: '3',
       icon: <EditOutlined />,
       label: (
-        <button className="button-color" style={{ color: '#fff' }}>
+        <button className="button-color" style={{ color: '#212529' }}>
           Editar
         </button>
       ),
@@ -61,7 +60,7 @@ export default function TaskCard({ task, openPanelTask, color, styles }) {
       key: '4',
       icon: <FullscreenOutlined />,
       label: (
-        <button className="button-color" style={{ color: '#fff' }}>
+        <button className="button-color" style={{ color: '#212529' }}>
           Abrir en una ventana
         </button>
       ),
@@ -76,7 +75,6 @@ export default function TaskCard({ task, openPanelTask, color, styles }) {
   }
   const toggleEditMode = () => {
     setEditMode(prev => !prev)
-    setMouseIsOver(false)
   }
   const handleMenuItemClick = ({ key }) => {
     switch (key) {
@@ -95,6 +93,7 @@ export default function TaskCard({ task, openPanelTask, color, styles }) {
     }
   }
   if (isDragging) {
+    // parte de atras de drag
     return <div ref={setNodeRef} style={style} className="task is-dragging" />
   }
 
@@ -154,12 +153,6 @@ export default function TaskCard({ task, openPanelTask, color, styles }) {
       className="task"
       onClick={e => {
         openPanelTask(e, task)
-      }}
-      onMouseEnter={() => {
-        setMouseIsOver(true)
-      }}
-      onMouseLeave={() => {
-        setMouseIsOver(false)
       }}>
       <p onClick={toggleEditMode}>{task.content}</p>
 

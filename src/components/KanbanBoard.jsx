@@ -188,7 +188,7 @@ export default function KanbanBoard() {
               color="#f8f9fa"
               styles={{
                 boxShadow: '0px 5px 5px -4px rgba(0, 0, 0, 0.1)',
-                padding: '0 0.8rem',
+                padding: '0.4rem 1rem',
                 minHeight: '4rem',
                 display: 'flex',
                 alignItems: 'center',
@@ -199,6 +199,7 @@ export default function KanbanBoard() {
                 border: '2px solid #343a40',
                 borderRadius: '0.8rem',
                 opacity: '0.8',
+                textWrap: 'pretty',
               }}
             />
           )}
