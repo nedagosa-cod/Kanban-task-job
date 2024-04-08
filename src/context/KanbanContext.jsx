@@ -98,9 +98,37 @@ const KanbanProvider = ({ children }) => {
       comments: [],
     },
     {
+      id: '4',
+      columnId: 'c',
+      content: 'Tarea 1 de columna C',
+      color: 'blanco',
+      properties: [
+        {
+          id: '1',
+          type: 'text',
+          title: 'Coordinadores',
+          value: 'Dato de coordinador',
+        },
+        {
+          id: '2',
+          type: 'text',
+          title: 'Formador',
+          value: '',
+        },
+        {
+          id: '3',
+          type: 'text',
+          title: 'Correo',
+          value: '',
+        },
+      ],
+      description: '',
+      comments: [],
+    },
+    {
       id: '3',
       columnId: 'b',
-      content: 'Tarea 2 de columna B',
+      content: 'Tarea 1 de columna B',
       color: 'blanco',
       properties: [
         {

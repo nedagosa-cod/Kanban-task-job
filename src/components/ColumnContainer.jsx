@@ -175,9 +175,7 @@ export default function ColumnContainer({
     const keysArray = Object.keys(columColors)
     if (key > 1) {
       updateColumn(column.id, column.title, keysArray[key - 1])
-      tasks.forEach(tarea => {
-        updateTask(tarea.id, tarea.content, keysArray[key - 1])
-      })
+      updateTask(column.id, keysArray[key - 1])
     } else {
       deleteColumn(column.id)
     }
