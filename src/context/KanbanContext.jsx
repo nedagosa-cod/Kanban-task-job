@@ -1,8 +1,11 @@
 import { createContext, useState } from 'react'
+import Localbase from 'localbase'
 
 const KanbanContext = createContext()
 
 const KanbanProvider = ({ children }) => {
+  let db_columns = new Localbase('columns')
+  let db_task = new Localbase('tasks')
   const [colorUser, setColorUser] = useState('#e9ecef')
   const [columns, setColumns] = useState([
     {

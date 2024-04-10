@@ -16,7 +16,7 @@ import PanelTask from './PanelTask/PanelTask'
 import KanbanContext from '../context/KanbanContext'
 
 export default function KanbanBoard() {
-  const { tasks, setTasks, columns, setColumns, setColorUser, colorUser } =
+  const { tasks, setTasks, columns, setColumns, setColorUser } =
     useContext(KanbanContext)
 
   const [activeColumn, setActiveColumn] = useState(null)
@@ -185,7 +185,6 @@ export default function KanbanBoard() {
         <div className="kanban-container__sortable">
           <div className="kanban-container__sortable--box">
             <SortableContext items={columnsId}>
-              {console.log(tasks)}
               {columns.map(column => (
                 <ColumnContainer
                   key={column.id}

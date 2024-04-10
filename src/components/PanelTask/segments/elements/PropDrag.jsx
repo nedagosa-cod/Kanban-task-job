@@ -25,6 +25,7 @@ const PropDrag = ({ property }) => {
   ]
   return (
     <Dropdown
+      trigger={['click']}
       menu={{
         items,
         onClick: e => {
