@@ -11,11 +11,6 @@ export const Loading = () => {
       title: 'Back Log',
       color: 'blanco',
     },
-    {
-      id: 'b',
-      title: 'Alert',
-      color: 'blanco',
-    },
   ]
   useEffect(() => {
     db_Kanban

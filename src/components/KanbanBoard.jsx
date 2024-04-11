@@ -14,11 +14,11 @@ import { createPortal } from 'react-dom'
 import IconPlus from '../icons/IconPlus'
 import PanelTask from './PanelTask/PanelTask'
 import KanbanContext from '../context/KanbanContext'
-
+//bug
 export default function KanbanBoard() {
   const { tasks, setTasks, columns, setColumns, setColorUser, db_Kanban } =
     useContext(KanbanContext)
-  const [alphabet, setAlphabet] = useState('cdefghijklmnopqrstuvwxyz')
+  const [alphabet, setAlphabet] = useState('bcdefghijklmnopqrstuvwxyz')
   const [activeColumn, setActiveColumn] = useState(null)
   const [activeTask, setActiveTask] = useState()
 
