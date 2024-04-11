@@ -1,8 +1,9 @@
 import './App.css'
 import './index.scss'
-import KanbanBoard from './components/KanbanBoard'
+import { Routes, Route } from 'react-router-dom'
+import { Loading } from './components/Loading/Loading'
 import { KanbanProvider } from './context/KanbanContext'
-
+import KanbanBoard from './components/KanbanBoard'
 function App() {
   return (
     <div className="app">
@@ -16,7 +17,10 @@ function App() {
         <div id="sun_layer3"></div>
       </div>
       <KanbanProvider>
-        <KanbanBoard />
+        <Routes>
+          <Route path="/" element={<Loading />} />
+          <Route path="/kanban" element={<KanbanBoard />} />
+        </Routes>
       </KanbanProvider>
     </div>
   )

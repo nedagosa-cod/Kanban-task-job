@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import { SortableContext, arrayMove } from '@dnd-kit/sortable'
 import {
   useSensors,
@@ -16,9 +16,9 @@ import PanelTask from './PanelTask/PanelTask'
 import KanbanContext from '../context/KanbanContext'
 
 export default function KanbanBoard() {
-  const { tasks, setTasks, columns, setColumns, setColorUser } =
+  const { tasks, setTasks, columns, setColumns, setColorUser, db_Kanban } =
     useContext(KanbanContext)
-
+  const [alphabet, setAlphabet] = useState('cdefghijklmnopqrstuvwxyz')
   const [activeColumn, setActiveColumn] = useState(null)
   const [activeTask, setActiveTask] = useState()
 
@@ -106,11 +106,25 @@ export default function KanbanBoard() {
     })
   }
   const deleteColumn = id => {
+    const deletedLetter = id
     const filteredColumns = columns.filter(col => col.id !== id)
     setColumns(filteredColumns)
+    db_Kanban.collection('columns').doc({ id: id }).delete()
 
     const newTasks = tasks.filter(t => t.columnId !== id)
     setTasks(newTasks)
+    tasks.forEach(task => {
+      if (task.columnId == id) {
+        db_Kanban.collection('tasks').doc({ columnId: id }).delete()
+      }
+    })
+    const updatedAlphabet = alphabet
+      .split('')
+      .concat(deletedLetter)
+      .sort()
+      .join('')
+
+    setAlphabet(updatedAlphabet)
   }
   const updateColumn = (id, title, color) => {
     const newColumns = columns.map(col => {
@@ -130,13 +144,21 @@ export default function KanbanBoard() {
     setTasks(newTasks)
   }
   const createNewColumn = () => {
+    const nextLetter = alphabet[0]
+
+    // Crear la nueva columna con la letra disponible
     const columnToAdd = {
-      id: Math.floor(Math.random() * 10001),
-      title: `Column ${columns.length + 1}`,
-      color: 'gris',
+      id: nextLetter,
+      title: `Column ${nextLetter}`,
+      color: 'blanco',
     }
 
+    // Agregar la nueva columna a la base de datos y actualizar el estado
+    db_Kanban.collection('columns').add(columnToAdd)
     setColumns([...columns, columnToAdd])
+
+    // Actualizar el estado de las letras disponibles
+    setAlphabet(alphabet.substring(1))
   }
   const openPanelTask = (event, task) => {
     if (event == 'DIV' || event.target.nodeName == 'DIV') {
@@ -174,6 +196,21 @@ export default function KanbanBoard() {
       negro: '#373737',
     },
   }
+
+  useEffect(() => {
+    db_Kanban
+      .collection('columns')
+      .get()
+      .then(columns => {
+        setColumns(columns)
+      })
+    db_Kanban
+      .collection('tasks')
+      .get()
+      .then(tasks => {
+        setTasks(tasks)
+      })
+  }, [])
 
   return (
     <div className="kanban-container">
@@ -245,6 +282,12 @@ export default function KanbanBoard() {
           <PanelTask task={dataPanel} closePanelTask={closePanelTask} />,
           document.body
         )}
+      <div
+        onClick={() => {
+          console.log(tasks)
+        }}>
+        TEST
+      </div>
     </div>
   )
 }

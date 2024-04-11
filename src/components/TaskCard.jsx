@@ -125,6 +125,7 @@ export default function TaskCard({ task, openPanelTask, color, styles }) {
             }}
             className="task__btn">
             <IconTrash style={{ stroke: color }} />
+            etssdfasdfasdf
           </button>
 
           <Dropdown
