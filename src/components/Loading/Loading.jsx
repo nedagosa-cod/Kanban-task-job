@@ -13,8 +13,13 @@ export const Loading = () => {
     },
     {
       id: 'b',
-      title: 'Alert',
-      color: 'blanco',
+      title: 'Doing',
+      color: 'azul',
+    },
+    {
+      id: 'c',
+      title: 'Done',
+      color: 'verde',
     },
   ]
   useEffect(() => {

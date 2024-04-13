@@ -18,7 +18,7 @@ import KanbanContext from '../context/KanbanContext'
 export default function KanbanBoard() {
   const { tasks, setTasks, columns, setColumns, setColorUser, db_Kanban } =
     useContext(KanbanContext)
-  const [alphabet, setAlphabet] = useState('cdefghijklmnopqrstuvwxyz')
+  const [alphabet, setAlphabet] = useState('defghijklmnopqrstuvwxyz')
   const [activeColumn, setActiveColumn] = useState(null)
   const [activeTask, setActiveTask] = useState()
 
