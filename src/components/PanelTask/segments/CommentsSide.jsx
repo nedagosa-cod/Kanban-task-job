@@ -3,8 +3,11 @@ import IconComment from '../../../icons/IconComment'
 import ReactQuill from 'react-quill'
 import IconSend from '../../../icons/IconSend'
 import parse from 'html-react-parser'
+import { useContext } from 'react'
+import KanbanContext from '../../../context/KanbanContext'
 
 const CommentsSide = ({ task }) => {
+  const { db_Kanban } = useContext(KanbanContext)
   const [creatingComment, setCreatingComment] = useState(false)
   const [activeComments, setActiveComments] = useState(task.comments)
   const [quillValue, setQuillValue] = useState('')
@@ -16,7 +19,6 @@ const CommentsSide = ({ task }) => {
   }
 
   const createComment = () => {
-    console.log(activeComments)
     if (!creatingComment) {
       setCreatingComment(true)
     } else {
@@ -31,6 +33,12 @@ const CommentsSide = ({ task }) => {
       setActiveComments(newComment)
       setCreatingComment(false)
       setQuillValue('')
+      console.log(task.id)
+      console.log(newComment)
+      db_Kanban
+        .collection('tasks')
+        .doc({ id: task.id })
+        .update({ comments: newComment })
     }
   }
   const updateComment = value => {

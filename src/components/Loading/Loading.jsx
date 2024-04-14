@@ -30,15 +30,18 @@ export const Loading = () => {
         if (column.length == 0) {
           // CREA LAS COLUMNAS POR DEFECTO SI NO EXISTEN UNAS GUARDADAS
           defaultColumns.forEach(column => {
-            db_Kanban.collection('columns').add({
-              id: column.id,
-              title: column.title,
-              color: column.color,
-            })
+            db_Kanban.collection('columns').add(
+              {
+                id: column.id,
+                title: column.title,
+                color: column.color,
+              },
+              column.id
+            )
           })
           // CREA LAS TAREAS POR DEFECTO SI NO EXISTEN UNAS GUARDADAS
           db_Kanban.collection('tasks').add({
-            id: '1',
+            id: 1,
             columnId: 'a',
             content: 'Tarea 1 de columna A',
             color: 'blanco',
@@ -66,13 +69,13 @@ export const Loading = () => {
             description: '',
             comments: [
               {
-                id: '1',
+                id: 1,
                 date: '2023/06/24',
                 content:
                   '<p><u>Este es un </u><strong><u>comentario</u> </strong><em>que va</em> a tener <strong style="color: rgb(230, 0, 0);">ciertas </strong>ediciones</p>',
               },
               {
-                id: '2',
+                id: 2,
                 date: '2023/06/24',
                 content:
                   '<p><u>Este es un </u><strong><u>comentario</u> </strong><em>que va</em> a tener <strong style="color: rgb(230, 0, 0);">ciertas </strong>ediciones</p>',

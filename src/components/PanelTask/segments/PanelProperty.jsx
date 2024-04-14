@@ -3,7 +3,6 @@ import {
   CheckSquareOutlined,
   MenuUnfoldOutlined,
 } from '@ant-design/icons'
-import IconPropMenu from '../../../icons/IconPropMenu'
 import { useState } from 'react'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'

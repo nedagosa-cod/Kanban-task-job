@@ -8,13 +8,14 @@ import { ButtonCreateProp } from './segments/elements/ButtonCreateProp'
 import KanbanContext from '../../context/KanbanContext'
 import CommentsSide from './segments/CommentsSide'
 
-export default function PanelTask({ task, closePanelTask }) {
+export default function PanelTask({ task }) {
   const { updateTaskDDBB } = useContext(KanbanContext)
 
   const [properties, setProperties] = useState(task.properties)
 
   const [dataTask, setDataTask] = useState({
     id: task.id,
+    color: task.color,
     columnId: task.columnId,
     content: task.content,
     properties: task.properties,
@@ -37,6 +38,7 @@ export default function PanelTask({ task, closePanelTask }) {
     setDataTask(prevState => ({
       ...prevState,
       [name]: value,
+      color: task.color,
     }))
     updateTaskDDBB(dataTask)
   }
@@ -47,7 +49,6 @@ export default function PanelTask({ task, closePanelTask }) {
     }))
     updateTaskDDBB(dataTask)
   }
-
   const updateProperty = (event, prop) => {
     setProperties(prevState => {
       return prevState.map(mapProperty => {
@@ -75,6 +76,7 @@ export default function PanelTask({ task, closePanelTask }) {
         return mapProperty
       })
     })
+    updateTaskDDBB(properties)
   }
 
   const updateTask = prop => {
@@ -114,7 +116,6 @@ export default function PanelTask({ task, closePanelTask }) {
       className="panel-bx-task"
       onClick={e => {
         updateTask(properties)
-        closePanelTask(e.target.className)
       }}>
       <DndContext sensors={sensors} onDragEnd={onDragEnd}>
         <div

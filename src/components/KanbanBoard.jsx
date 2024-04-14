@@ -1,5 +1,10 @@
-import { useContext, useEffect, useMemo, useState } from 'react'
+import { useContext, useMemo, useState } from 'react'
 import { SortableContext, arrayMove } from '@dnd-kit/sortable'
+import ColumnContainer from './Elements/ColumnContainer'
+import './styles.scss'
+import TaskCard from './Elements/TaskCard'
+import IconPlus from '../icons/IconPlus'
+import KanbanContext from '../context/KanbanContext'
 import {
   useSensors,
   useSensor,
@@ -7,23 +12,36 @@ import {
   DragOverlay,
   DndContext,
 } from '@dnd-kit/core'
-import ColumnContainer from './ColumnContainer'
-import './styles.scss'
-import TaskCard from './TaskCard'
-import { createPortal } from 'react-dom'
-import IconPlus from '../icons/IconPlus'
-import PanelTask from './PanelTask/PanelTask'
-import KanbanContext from '../context/KanbanContext'
 
-export default function KanbanBoard() {
-  const { tasks, setTasks, columns, setColumns, setColorUser, db_Kanban } =
+const KanbanBoard = ({ columns, tasks }) => {
+  const { setTasks, setColumns, db_Kanban, alphabet, setAlphabet } =
     useContext(KanbanContext)
-  const [alphabet, setAlphabet] = useState('defghijklmnopqrstuvwxyz')
+  const columColors = {
+    blanco: '#f8f9fa',
+    gris: '#cfcfcf',
+    rojo: '#ffcdcd',
+    naranja: '#ffead2',
+    amarillo: '#fff9ca',
+    verde: '#ccffd7',
+    azul: '#cfe6ff',
+    morado: '#efd2ff',
+    fuccia: '#ffd1f3',
+    negro: '#afafaf',
+    heavy: {
+      blanco: '#f8f9fa',
+      gris: '#ababab',
+      rojo: '#f93f3f',
+      naranja: '#ffa339',
+      amarillo: '#ffea46',
+      verde: '#56ff7a',
+      azul: '#3f9bff',
+      morado: '#be47ff',
+      fuccia: '#ff4dd1',
+      negro: '#373737',
+    },
+  }
   const [activeColumn, setActiveColumn] = useState(null)
   const [activeTask, setActiveTask] = useState()
-
-  const [activePanel, setActivePanel] = useState(false)
-  const [dataPanel, setDataPanel] = useState({})
 
   const columnsId = useMemo(() => columns.map(col => col.id), [columns])
 
@@ -105,44 +123,6 @@ export default function KanbanBoard() {
       return arrayMove(columns, activeColumnIndex, overColumnIndex)
     })
   }
-  const deleteColumn = id => {
-    const deletedLetter = id
-    const filteredColumns = columns.filter(col => col.id !== id)
-    setColumns(filteredColumns)
-    db_Kanban.collection('columns').doc({ id: id }).delete()
-
-    const newTasks = tasks.filter(t => t.columnId !== id)
-    setTasks(newTasks)
-    tasks.forEach(task => {
-      if (task.columnId == id) {
-        db_Kanban.collection('tasks').doc({ columnId: id }).delete()
-      }
-    })
-    const updatedAlphabet = alphabet
-      .split('')
-      .concat(deletedLetter)
-      .sort()
-      .join('')
-
-    setAlphabet(updatedAlphabet)
-  }
-  const updateColumn = (id, title, color) => {
-    const newColumns = columns.map(col => {
-      if (col.id !== id) return col
-      return { ...col, title, color }
-    })
-    setColorUser(color)
-    setColumns(newColumns)
-  }
-  const updateTask = (idCol, color) => {
-    const newTasks = tasks.map(taskk => {
-      if (taskk.columnId !== idCol) return taskk
-      return { ...taskk, content: taskk.content, color }
-    })
-
-    console.log(newTasks)
-    setTasks(newTasks)
-  }
   const createNewColumn = () => {
     const nextLetter = alphabet[0]
 
@@ -154,63 +134,12 @@ export default function KanbanBoard() {
     }
 
     // Agregar la nueva columna a la base de datos y actualizar el estado
-    db_Kanban.collection('columns').add(columnToAdd)
+    db_Kanban.collection('columns').add(columnToAdd, columnToAdd.id)
     setColumns([...columns, columnToAdd])
 
     // Actualizar el estado de las letras disponibles
     setAlphabet(alphabet.substring(1))
   }
-  const openPanelTask = (event, task) => {
-    if (event == 'DIV' || event.target.nodeName == 'DIV') {
-      setActivePanel(true)
-      setDataPanel(task)
-    }
-  }
-  const closePanelTask = leftClickAllow => {
-    if (leftClickAllow === 'panel-bx-task') {
-      setActivePanel(false)
-    }
-  }
-
-  const columColors = {
-    blanco: '#f8f9fa',
-    gris: '#cfcfcf',
-    rojo: '#ffcdcd',
-    naranja: '#ffead2',
-    amarillo: '#fff9ca',
-    verde: '#ccffd7',
-    azul: '#cfe6ff',
-    morado: '#efd2ff',
-    fuccia: '#ffd1f3',
-    negro: '#afafaf',
-    heavy: {
-      blanco: '#f8f9fa',
-      gris: '#ababab',
-      rojo: '#f93f3f',
-      naranja: '#ffa339',
-      amarillo: '#ffea46',
-      verde: '#56ff7a',
-      azul: '#3f9bff',
-      morado: '#be47ff',
-      fuccia: '#ff4dd1',
-      negro: '#373737',
-    },
-  }
-
-  useEffect(() => {
-    db_Kanban
-      .collection('columns')
-      .get()
-      .then(columns => {
-        setColumns(columns)
-      })
-    db_Kanban
-      .collection('tasks')
-      .get()
-      .then(tasks => {
-        setTasks(tasks)
-      })
-  }, [])
 
   return (
     <div className="kanban-container">
@@ -227,10 +156,6 @@ export default function KanbanBoard() {
                   key={column.id}
                   column={column}
                   tasks={tasks.filter(task => task.columnId === column.id)}
-                  updateColumn={updateColumn}
-                  updateTask={updateTask}
-                  deleteColumn={deleteColumn}
-                  openPanelTask={openPanelTask}
                   columColors={columColors}
                 />
               ))}
@@ -277,17 +202,13 @@ export default function KanbanBoard() {
           )}
         </DragOverlay>
       </DndContext>
-      {activePanel &&
+      {/* {activePanel &&
         createPortal(
           <PanelTask task={dataPanel} closePanelTask={closePanelTask} />,
           document.body
-        )}
-      <div
-        onClick={() => {
-          console.log(tasks)
-        }}>
-        TEST
-      </div>
+        )} */}
     </div>
   )
 }
+
+export default KanbanBoard

@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react'
-import IconTrash from '../icons/iconTrash'
-import IconMenu from '../icons/IconMenu'
+import IconTrash from '../../icons/iconTrash'
+import IconMenu from '../../icons/IconMenu'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { Dropdown } from 'antd'
@@ -10,11 +10,14 @@ import {
   EditOutlined,
   FullscreenOutlined,
 } from '@ant-design/icons'
-import KanbanContext from '../context/KanbanContext'
+import KanbanContext from '../../context/KanbanContext'
+import { createPortal } from 'react-dom'
+import PanelTask from '../PanelTask/PanelTask'
 
-export default function TaskCard({ task, openPanelTask, color, styles }) {
+export default function TaskCard({ task, color, styles }) {
   const { updateTask, deleteTask, createTask } = useContext(KanbanContext)
   const [editMode, setEditMode] = useState(false)
+  const [activePanel, setActivePanel] = useState(false)
 
   const {
     setNodeRef,
@@ -88,15 +91,19 @@ export default function TaskCard({ task, openPanelTask, color, styles }) {
         setEditMode(true)
         break
       case '4':
-        openPanelTask('DIV', task)
+        openPanelTask('DIV')
         break
+    }
+  }
+  const openPanelTask = event => {
+    if (event == 'DIV' || event.target.nodeName == 'DIV') {
+      setActivePanel(!activePanel)
     }
   }
   if (isDragging) {
     // parte de atras de drag
     return <div ref={setNodeRef} style={style} className="task is-dragging" />
   }
-
   if (editMode) {
     return (
       <div
@@ -125,7 +132,6 @@ export default function TaskCard({ task, openPanelTask, color, styles }) {
             }}
             className="task__btn">
             <IconTrash style={{ stroke: color }} />
-            etssdfasdfasdf
           </button>
 
           <Dropdown
@@ -153,7 +159,7 @@ export default function TaskCard({ task, openPanelTask, color, styles }) {
       {...listeners}
       className="task"
       onClick={e => {
-        openPanelTask(e, task)
+        openPanelTask(e)
       }}>
       <p onClick={toggleEditMode}>{task.content}</p>
 
@@ -179,6 +185,7 @@ export default function TaskCard({ task, openPanelTask, color, styles }) {
           </button>
         </Dropdown>
       </div>
+      {activePanel && createPortal(<PanelTask task={task} />, document.body)}
     </div>
   )
 }

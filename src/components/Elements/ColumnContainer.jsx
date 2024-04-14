@@ -1,28 +1,26 @@
 import { SortableContext, useSortable } from '@dnd-kit/sortable'
-import { DragOverlay } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
-import IconTrash from '../icons/iconTrash'
+import IconTrash from '../../icons/iconTrash'
 import TaskCard from './TaskCard'
-import IconPlus from '../icons/IconPlus'
-import IconMenu from '../icons/IconMenu'
+import IconPlus from '../../icons/IconPlus'
+import IconMenu from '../../icons/IconMenu'
 import { useContext, useMemo, useState } from 'react'
 import { Dropdown } from 'antd'
 import { DeleteOutlined, WalletFilled } from '@ant-design/icons'
-import KanbanContext from '../context/KanbanContext'
+import KanbanContext from '../../context/KanbanContext'
 
-export default function ColumnContainer({
-  column,
-  tasks,
-  updateColumn,
-  updateTask,
-  deleteColumn,
-  openPanelTask,
-}) {
-  const { createTask } = useContext(KanbanContext)
+export default function ColumnContainer({ column, tasks }) {
+  const {
+    columns,
+    createTask,
+    updateTask,
+    setColorUser,
+    setColumns,
+    setTasks,
+    db_Kanban,
+  } = useContext(KanbanContext)
   const [editMode, setEditMode] = useState(false)
-  const tasksIds = useMemo(() => {
-    return tasks.map(task => task.id)
-  }, [tasks])
+
   const {
     attributes,
     listeners,
@@ -38,6 +36,50 @@ export default function ColumnContainer({
     },
     disabled: editMode,
   })
+
+  const updateColumn = column => {
+    const { id, title, color } = column
+    const newColumns = columns.map(col => {
+      if (col.id !== id) return col
+      db_Kanban.collection('columns').doc({ id: id }).update({ title, color })
+      return { ...col, title, color }
+    })
+
+    setColorUser(color)
+    setColumns(newColumns)
+  }
+  const updateColumnColor = ({ key }) => {
+    const keysArray = Object.keys(columColors)
+    if (key > 1) {
+      updateColumn({
+        id: column.id,
+        title: column.title,
+        color: keysArray[key - 1],
+      })
+      updateTask(column.id, keysArray[key - 1])
+    } else {
+      deleteColumn(column.id)
+    }
+  }
+  const deleteColumn = id => {
+    const filteredColumns = columns.filter(col => col.id !== id)
+    setColumns(filteredColumns)
+    db_Kanban.collection('columns').doc({ id: id }).delete()
+
+    const newTasks = tasks.filter(t => t.columnId !== id)
+    setTasks(newTasks)
+    tasks.forEach(task => {
+      if (task.columnId == id) {
+        db_Kanban.collection('tasks').doc({ columnId: id }).delete()
+      }
+    })
+    const updatedAlphabet = alphabet.split('').concat(id).sort().join('')
+
+    setAlphabet(updatedAlphabet)
+  }
+  const tasksIds = useMemo(() => {
+    return tasks.map(task => task.id)
+  }, [tasks])
   const columColors = {
     blanco: '#f8f9fa',
     gris: '#cfcfcf',
@@ -170,22 +212,11 @@ export default function ColumnContainer({
       disabled: false,
     },
   ]
-
-  const clickMenuColor = ({ key }) => {
-    const keysArray = Object.keys(columColors)
-    if (key > 1) {
-      updateColumn(column.id, column.title, keysArray[key - 1])
-      updateTask(column.id, keysArray[key - 1])
-    } else {
-      deleteColumn(column.id)
-    }
-  }
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
     border: '4px solid ' + columColors.heavy[column.color],
   }
-
   if (isDragging) {
     // parte de atras cuando cuando se alza el elemento
     return (
@@ -223,9 +254,14 @@ export default function ColumnContainer({
                 setEditMode(false)
               }}
               className="title"
-              onChange={e =>
-                updateColumn(column.id, e.target.value, column.color)
-              }
+              onChange={e => {
+                let newColum = {
+                  id: column.id,
+                  title: e.target.value,
+                  color: column.color,
+                }
+                updateColumn(newColum)
+              }}
               value={column.title}
             />
           )}
@@ -243,7 +279,7 @@ export default function ColumnContainer({
           <Dropdown
             menu={{
               items,
-              onClick: clickMenuColor,
+              onClick: updateColumnColor,
             }}
             trigger={['click']}
             overlayClassName="dropdown-content"
@@ -262,7 +298,6 @@ export default function ColumnContainer({
             <TaskCard
               key={task.id}
               task={task}
-              openPanelTask={openPanelTask}
               color={columColors[column.color]}
             />
           ))}
