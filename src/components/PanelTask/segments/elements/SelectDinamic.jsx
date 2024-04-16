@@ -1,11 +1,7 @@
 import { CloseCircleOutlined } from '@ant-design/icons'
 import { useEffect, useRef, useState } from 'react'
 
-export const SelectDinamic = ({
-  updateProperty,
-  property,
-  eventClickPanel,
-}) => {
+export const SelectDinamic = ({ updateProperty, property }) => {
   const [options, setOption] = useState(property.list)
   const [optionsSelected, setOptionsSelected] = useState(property.value)
   const [nameOption, setNameOption] = useState('')
@@ -26,11 +22,10 @@ export const SelectDinamic = ({
   }
   const newOptionSelected = newValueOption => {
     setOptionsSelected(newValueOption)
-    updateProperty(false, {
-      id: property.id,
-      type: property.type,
-      title: property.title,
+    updateProperty({
+      list: options,
       value: newValueOption,
+      name: property.type,
     })
   }
 
@@ -77,7 +72,7 @@ export const SelectDinamic = ({
                 key={i}
                 onClick={() => {
                   newOptionSelected(option)
-                  setPlaceholder(false)
+                  setSelectActive(false)
                 }}>
                 <p>{option}</p>
                 <span

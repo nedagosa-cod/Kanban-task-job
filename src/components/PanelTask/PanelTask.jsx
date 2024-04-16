@@ -7,11 +7,11 @@ import DescriptionTask from './segments/DescriptionTask'
 import { ButtonCreateProp } from './segments/elements/ButtonCreateProp'
 import KanbanContext from '../../context/KanbanContext'
 import CommentsSide from './segments/CommentsSide'
+import { createPortal } from 'react-dom'
 
-export default function PanelTask({ task }) {
+export default function PanelTask({ task, open, onClose }) {
+  if (!open) return null
   const { updateTaskDDBB } = useContext(KanbanContext)
-
-  const [properties, setProperties] = useState(task.properties)
 
   const [dataTask, setDataTask] = useState({
     id: task.id,
@@ -22,61 +22,13 @@ export default function PanelTask({ task }) {
     description: task.description,
     comments: task.comments,
   })
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 10,
-      },
-    })
-  )
-  const propsIds = useMemo(() => {
-    return properties.map(prop => prop.id)
-  }, [properties])
 
-  const updateTaskPanel = event => {
-    const { name, value } = event.target
-    setDataTask(prevState => ({
-      ...prevState,
-      [name]: value,
-      color: task.color,
-    }))
-    updateTaskDDBB(dataTask)
-  }
   const updateDescription = dataDescription => {
     setDataTask(prevState => ({
       ...prevState,
       description: dataDescription,
     }))
     updateTaskDDBB(dataTask)
-  }
-  const updateProperty = (event, prop) => {
-    setProperties(prevState => {
-      return prevState.map(mapProperty => {
-        if (mapProperty.id == prop.id) {
-          if (event) {
-            switch (event.target.name) {
-              case 'title':
-                return {
-                  ...mapProperty,
-                  title: event.target.value,
-                }
-              default:
-                return {
-                  ...mapProperty,
-                  value: event.target.value,
-                }
-            }
-          } else {
-            return {
-              ...mapProperty,
-              value: prop.value,
-            }
-          }
-        }
-        return mapProperty
-      })
-    })
-    updateTaskDDBB(properties)
   }
 
   const updateTask = prop => {
@@ -86,7 +38,6 @@ export default function PanelTask({ task }) {
     }))
     updateTaskDDBB(dataTask)
   }
-
   const sendProps = props => {
     setProperties(props)
     setDataTask(prevState => ({
@@ -96,6 +47,7 @@ export default function PanelTask({ task }) {
     updateTaskDDBB(dataTask)
   }
 
+  // #region inmutables
   const onDragEnd = event => {
     const { active, over } = event
     if (!over) return
@@ -108,41 +60,42 @@ export default function PanelTask({ task }) {
       return arrayMove(props, oldIndex, newIndex)
     })
   }
-  const eventClickPanel = funcion => {
-    funcion
-  }
-  return (
-    <div
-      className="panel-bx-task"
-      onClick={e => {
-        updateTask(properties)
-      }}>
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 10,
+      },
+    })
+  )
+  const propsIds = useMemo(() => {
+    return task.properties.map(prop => prop.id)
+  }, [task.properties])
+  // #endregion
+
+  return createPortal(
+    <div className="panel-bx-task" onClick={onClose}>
       <DndContext sensors={sensors} onDragEnd={onDragEnd}>
-        <div
-          className="panel"
-          onClick={() => {
-            eventClickPanel()
-          }}>
+        <div className="panel">
           <div className="left">
             {/* {Titulo} */}
-            <PanelTitle dataTask={dataTask} updateTaskPanel={updateTaskPanel} />
+            <PanelTitle dataTask={dataTask} />
 
             {/* {Propiedades} */}
             <div className="left__box-props">
               <SortableContext items={propsIds}>
-                {properties.map(property => (
+                {task.properties.map(property => (
                   <PanelProperty
                     key={property.id}
-                    property={property}
-                    properties={properties}
-                    updateProperty={updateProperty}
-                    sendProps={sendProps}
-                    eventClickPanel={eventClickPanel}
+                    panelProperty={property}
+                    task={task}
                   />
                 ))}
               </SortableContext>
 
-              <ButtonCreateProp dataProps={properties} sendProps={sendProps} />
+              <ButtonCreateProp
+                dataProps={task.properties}
+                sendProps={sendProps}
+              />
             </div>
             <DescriptionTask
               task={dataTask}
@@ -154,6 +107,7 @@ export default function PanelTask({ task }) {
           </div>
         </div>
       </DndContext>
-    </div>
+    </div>,
+    document.getElementById('portal')
   )
 }

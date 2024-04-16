@@ -54,8 +54,8 @@ export const Loading = () => {
               },
               {
                 id: '2',
-                type: 'text',
-                title: 'Formador',
+                type: 'date',
+                title: 'Fecha de prueba',
                 value: '',
               },
               {

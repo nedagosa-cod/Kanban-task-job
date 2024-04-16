@@ -3,27 +3,43 @@ import {
   CheckSquareOutlined,
   MenuUnfoldOutlined,
 } from '@ant-design/icons'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { SelectDinamic } from './elements/SelectDinamic'
 import PropDrag from './elements/PropDrag'
+import KanbanContext from '../../../context/KanbanContext'
 
-export default function PanelProperty({
-  property,
-  properties,
-  updateProperty,
-  eventClickPanel,
-}) {
+export default function PanelProperty({ panelProperty, task }) {
+  const { updateTaskDDBB } = useContext(KanbanContext)
   const [editModeValue, setEditModeValue] = useState(false)
   const [editModeTitle, setEditModeTitle] = useState(false)
-  const [mouseIsOver, setMouseIsOver] = useState(false)
+  const [property, setProperty] = useState(panelProperty)
+  const [titleProp, setTitleProp] = useState(property.title)
+  const [valueProp, setValuePrp] = useState(property.value)
 
-  const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' },
-  ]
+  const updateProperty = element => {
+    let newProperty = {}
+    if (element.list) {
+      newProperty = {
+        ...property,
+        [element.name]: element.list,
+        value: element.value,
+      }
+    } else {
+      newProperty = { ...property, [element.name]: element.value }
+    }
+
+    let newTask = {
+      ...task,
+      properties: task.properties.map(p =>
+        p.id == newProperty.id ? newProperty : p
+      ),
+    }
+
+    updateTaskDDBB(newTask)
+    setEditModeTitle(false)
+  }
 
   // #region Componente de Encabezado
   const { setNodeRef, attributes, listeners, transform, transition } =
@@ -44,16 +60,7 @@ export default function PanelProperty({
   switch (property.type) {
     case 'text':
       return (
-        <div
-          ref={setNodeRef}
-          style={style}
-          className="panel-property"
-          onMouseEnter={() => {
-            setMouseIsOver(true)
-          }}
-          onMouseLeave={() => {
-            setMouseIsOver(false)
-          }}>
+        <div ref={setNodeRef} style={style} className="panel-property">
           <PropDrag property={property} />
 
           <button
@@ -62,22 +69,21 @@ export default function PanelProperty({
               setEditModeTitle(true)
             }}>
             <MenuUnfoldOutlined />
-            {!editModeTitle && <span>{property.title}</span>}
+            {!editModeTitle && <span>{titleProp}</span>}
             {editModeTitle && (
               <input
                 autoFocus
                 name="title"
-                value={property.title}
-                onBlur={() => {
-                  setEditModeTitle(false)
+                value={titleProp}
+                className="panel-property__title--edit"
+                onBlur={e => {
+                  updateProperty(e.target)
                 }}
                 onKeyDown={e => {
                   if (e.key !== 'Enter') return
-                  updateProperty(e, property)
-                  setEditModeTitle(false)
+                  e.target.blur()
                 }}
-                className="panel-property__title--edit"
-                onChange={e => updateProperty(e, property)}
+                onChange={e => setTitleProp(e.target.value)}
               />
             )}
           </button>
@@ -90,56 +96,50 @@ export default function PanelProperty({
             <input
               className={editModeValue ? 'prop-input edit' : 'prop-input'}
               name="value"
-              value={property.value}
+              value={valueProp}
               placeholder="Valor de la propiedad"
-              onBlur={() => {
-                setEditModeValue(false)
+              onBlur={e => {
+                updateProperty(e.target)
               }}
-              onChange={e => updateProperty(e, property)}
+              onKeyDown={e => {
+                if (e.key !== 'Enter') return
+                e.target.blur()
+              }}
+              onChange={e => setValuePrp(e.target.value)}
             />
           </label>
         </div>
       )
     case 'date':
       return (
-        <div
-          ref={setNodeRef}
-          style={style}
-          className="panel-property"
-          onMouseEnter={() => {
-            setMouseIsOver(true)
-          }}
-          onMouseLeave={() => {
-            setMouseIsOver(false)
-          }}>
+        <div ref={setNodeRef} style={style} className="panel-property">
           <PropDrag property={property} />
-          {/* {campo diferente} */}
+          {/* {Titulo propiedad} */}
           <button
             className="panel-property__title"
             onClick={() => {
               setEditModeTitle(true)
             }}>
             <CalendarOutlined />
-            {!editModeTitle && <span>{property.title}</span>}
+            {!editModeTitle && <span>{titleProp}</span>}
             {editModeTitle && (
               <input
                 autoFocus
                 name="title"
-                value={property.title}
-                onBlur={() => {
-                  setEditModeTitle(false)
+                className="panel-property__title--edit"
+                value={titleProp}
+                onBlur={e => {
+                  updateProperty(e.target)
                 }}
                 onKeyDown={e => {
                   if (e.key !== 'Enter') return
-                  updateProperty(e, property)
-                  setEditModeTitle(false)
+                  e.target.blur()
                 }}
-                className="panel-property__title--edit"
-                onChange={e => updateProperty(e, property)}
+                onChange={e => setTitleProp(e.target.value)}
               />
             )}
           </button>
-          {/* { END campo diferente} */}
+          {/* { END Titulo propiedad} */}
 
           <label
             onClick={() => {
@@ -152,28 +152,23 @@ export default function PanelProperty({
               }
               name="value"
               type="date"
-              value={property.value}
+              value={valueProp}
               placeholder="Valor de la propiedad"
-              onBlur={() => {
-                setEditModeValue(false)
+              onBlur={e => {
+                updateProperty(e.target)
               }}
-              onChange={e => updateProperty(e, property)}
+              onKeyDown={e => {
+                if (e.key !== 'Enter') return
+                e.target.blur()
+              }}
+              onChange={e => setValuePrp(e.target.value)}
             />
           </label>
         </div>
       )
     case 'list':
       return (
-        <div
-          ref={setNodeRef}
-          style={style}
-          className="panel-property"
-          onMouseEnter={() => {
-            setMouseIsOver(true)
-          }}
-          onMouseLeave={() => {
-            setMouseIsOver(false)
-          }}>
+        <div ref={setNodeRef} style={style} className="panel-property">
           <PropDrag property={property} />
           {/* {left element} */}
           <button
@@ -182,22 +177,22 @@ export default function PanelProperty({
               setEditModeTitle(true)
             }}>
             <CheckSquareOutlined />
-            {!editModeTitle && <span>{property.title}</span>}
+            {!editModeTitle && <span>{titleProp}</span>}
             {editModeTitle && (
               <input
                 autoFocus
                 name="title"
-                value={property.title}
+                value={titleProp}
                 id={property.id}
-                onBlur={() => {
-                  setEditModeTitle(false)
+                className="panel-property__title--edit"
+                onBlur={e => {
+                  updateProperty(e.target)
                 }}
                 onKeyDown={e => {
                   if (e.key !== 'Enter') return
-                  setEditModeTitle(false)
+                  e.target.blur()
                 }}
-                className="panel-property__title--edit"
-                onChange={e => updateProperty(e, property)}
+                onChange={e => setTitleProp(e.target.value)}
               />
             )}
           </button>
@@ -207,33 +202,22 @@ export default function PanelProperty({
           <SelectDinamic
             updateProperty={updateProperty}
             property={property}
-            properties={properties}
-            eventClickPanel={eventClickPanel}
+            properties={task.properties}
           />
           {/* {END right element} */}
         </div>
       )
     default:
       return (
-        <div
-          ref={setNodeRef}
-          style={style}
-          className="panel-property"
-          onMouseEnter={() => {
-            setMouseIsOver(true)
-          }}
-          onMouseLeave={() => {
-            setMouseIsOver(false)
-          }}>
+        <div ref={setNodeRef} style={style} className="panel-property">
           <PropDrag property={property} />
-
           <button
             className="panel-property__title"
             onClick={() => {
               setEditModeTitle(true)
             }}>
             <MenuUnfoldOutlined />
-            {!editModeTitle && <span>{property.title}</span>}
+            {!editModeTitle && <span>{titleProp}</span>}
             {editModeTitle && (
               <input
                 autoFocus

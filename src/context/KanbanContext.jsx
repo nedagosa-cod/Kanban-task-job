@@ -20,6 +20,7 @@ const KanbanProvider = ({ children }) => {
     //   columnId: 'a',
     //   content: 'Tarea 1 de columna A',
     //   color: 'blanco',
+    //   description: '',
     //   properties: [
     //     {
     //       id: '1',
@@ -41,7 +42,6 @@ const KanbanProvider = ({ children }) => {
     //       list: ['Colombia', 'Guatemala', 'Argentina', 'Venezuela'],
     //     },
     //   ],
-    //   description: '',
     //   comments: [
     //     {
     //       id: '1',
@@ -124,10 +124,9 @@ const KanbanProvider = ({ children }) => {
         .update({ ...dataBase })
       return dataBase
     })
-
+    console.log(newTasks)
     setTasks(newTasks)
   }
-
   const data = {
     tasks,
     setTasks,

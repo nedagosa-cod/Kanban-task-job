@@ -1,10 +1,11 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import IconTrash from '../../icons/iconTrash'
 import IconMenu from '../../icons/IconMenu'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { Dropdown } from 'antd'
 import {
+  ConsoleSqlOutlined,
   CopyOutlined,
   DeleteOutlined,
   EditOutlined,
@@ -17,8 +18,32 @@ import PanelTask from '../PanelTask/PanelTask'
 export default function TaskCard({ task, color, styles }) {
   const { updateTask, deleteTask, createTask } = useContext(KanbanContext)
   const [editMode, setEditMode] = useState(false)
-  const [activePanel, setActivePanel] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
 
+  const onClose = () => {
+    setIsOpen(false)
+  }
+  const toggleEditMode = () => {
+    setEditMode(prev => !prev)
+  }
+  const handleMenuItemClick = ({ key }) => {
+    switch (key) {
+      case '1':
+        deleteTask(task.id)
+        break
+      case '2':
+        createTask(task.columnId, task)
+        break
+      case '3':
+        setEditMode(true)
+        break
+      case '4':
+        openPanelTask(true)
+        break
+    }
+  }
+
+  // #region DnD
   const {
     setNodeRef,
     attributes,
@@ -76,30 +101,6 @@ export default function TaskCard({ task, color, styles }) {
     transition,
     background: color,
   }
-  const toggleEditMode = () => {
-    setEditMode(prev => !prev)
-  }
-  const handleMenuItemClick = ({ key }) => {
-    switch (key) {
-      case '1':
-        deleteTask(task.id)
-        break
-      case '2':
-        createTask(task.columnId, task)
-        break
-      case '3':
-        setEditMode(true)
-        break
-      case '4':
-        openPanelTask('DIV')
-        break
-    }
-  }
-  const openPanelTask = event => {
-    if (event == 'DIV' || event.target.nodeName == 'DIV') {
-      setActivePanel(!activePanel)
-    }
-  }
   if (isDragging) {
     // parte de atras de drag
     return <div ref={setNodeRef} style={style} className="task is-dragging" />
@@ -150,42 +151,53 @@ export default function TaskCard({ task, color, styles }) {
       </div>
     )
   }
+  // #endregion
 
   return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-      className="task"
-      onClick={e => {
-        openPanelTask(e)
-      }}>
-      <p onClick={toggleEditMode}>{task.content}</p>
-
-      <div className="task__menu">
-        <button
+    <div>
+      <div
+        ref={setNodeRef}
+        style={style}
+        {...attributes}
+        {...listeners}
+        className="task"
+        onClick={() => {
+          setIsOpen(true)
+        }}
+        onKeyDown={e => {
+          if (e.key !== 'Escape') return
+          setIsOpen(false)
+        }}>
+        <p
           onClick={() => {
-            deleteTask(task.id)
-          }}
-          className="task__btn">
-          <IconTrash style={{ stroke: color }} />
-        </button>
-
-        <Dropdown
-          menu={{
-            items,
-            onClick: handleMenuItemClick,
-          }}
-          trigger={['click']}
-          overlayClassName="dropdown-content"
-          placement="bottom">
-          <button className="task__btn">
-            <IconMenu style={{ stroke: color }} />
+            toggleEditMode()
+          }}>
+          {task.content}
+        </p>
+        <div className="task__menu">
+          <button
+            onClick={() => {
+              deleteTask(task.id)
+            }}
+            className="task__btn">
+            <IconTrash style={{ stroke: color }} />
           </button>
-        </Dropdown>
+
+          <Dropdown
+            menu={{
+              items,
+              onClick: handleMenuItemClick,
+            }}
+            trigger={['click']}
+            overlayClassName="dropdown-content"
+            placement="bottom">
+            <button className="task__btn">
+              <IconMenu style={{ stroke: color }} />
+            </button>
+          </Dropdown>
+        </div>
       </div>
-      {activePanel && createPortal(<PanelTask task={task} />, document.body)}
+      <PanelTask task={task} open={isOpen} onClose={onClose} />
     </div>
   )
 }
