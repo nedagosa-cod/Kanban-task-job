@@ -11,7 +11,7 @@ import PropDrag from './elements/PropDrag'
 import KanbanContext from '../../../context/KanbanContext'
 
 export default function PanelProperty({ panelProperty, task }) {
-  const { updateTaskDDBB } = useContext(KanbanContext)
+  const { updateTaskDDBB, updateDb } = useContext(KanbanContext)
   const [editModeValue, setEditModeValue] = useState(false)
   const [editModeTitle, setEditModeTitle] = useState(false)
   const [property, setProperty] = useState(panelProperty)
@@ -19,26 +19,30 @@ export default function PanelProperty({ panelProperty, task }) {
   const [valueProp, setValuePrp] = useState(property.value)
 
   const updateProperty = element => {
-    let newProperty = {}
-    if (element.list) {
-      newProperty = {
-        ...property,
-        [element.name]: element.list,
-        value: element.value,
+    // let newProperty = {}
+    // if (element.list) {
+    //   newProperty = {
+    //     ...property,
+    //     [element.name]: element.list,
+    //     value: element.value,
+    //   }
+    // } else {
+    //   newProperty = { ...property, [element.name]: element.value }
+    // }
+    let newProps
+    newProps = task.properties.map(prop => {
+      if (prop.id != property.id) return prop
+      return {
+        ...prop,
+        [element.name]: element.value,
       }
-    } else {
-      newProperty = { ...property, [element.name]: element.value }
+    })
+    let sendProps = {
+      id: task.id,
+      name: 'properties',
+      value: newProps,
     }
-
-    let newTask = {
-      ...task,
-      properties: task.properties.map(p =>
-        p.id == newProperty.id ? newProperty : p
-      ),
-    }
-
-    updateTaskDDBB(newTask)
-    setEditModeTitle(false)
+    updateDb(sendProps)
   }
 
   // #region Componente de Encabezado

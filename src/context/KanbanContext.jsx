@@ -5,7 +5,7 @@ const KanbanContext = createContext()
 const db_Kanban = new Localbase('Kanban')
 
 const KanbanProvider = ({ children }) => {
-  const [alphabet, setAlphabet] = useState('defghijklmnopqrstuvwxyz')
+  const [alphabet, setAlphabet] = useState('efghijklmnopqrstuvwxyz')
   const [colorUser, setColorUser] = useState('#e9ecef')
   const [columns, setColumns] = useState([
     // {
@@ -124,8 +124,22 @@ const KanbanProvider = ({ children }) => {
         .update({ ...dataBase })
       return dataBase
     })
-    console.log(newTasks)
     setTasks(newTasks)
+  }
+  const updateDb = data => {
+    const { id, name, value } = data
+    tasks.forEach(task => {
+      if (task.id !== id) return task
+      db_Kanban
+        .collection('tasks')
+        .doc({ id: id })
+        .update({ ...task, [name]: value })
+    })
+    setTasks(prevTasks =>
+      prevTasks.map(task =>
+        task.id === id ? { ...task, [name]: value } : task
+      )
+    )
   }
   const data = {
     tasks,
@@ -141,6 +155,7 @@ const KanbanProvider = ({ children }) => {
     db_Kanban,
     alphabet,
     setAlphabet,
+    updateDb,
   }
 
   return (

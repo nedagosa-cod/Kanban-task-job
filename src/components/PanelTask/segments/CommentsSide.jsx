@@ -7,7 +7,7 @@ import { useContext } from 'react'
 import KanbanContext from '../../../context/KanbanContext'
 
 const CommentsSide = ({ task }) => {
-  const { updateTaskDDBB } = useContext(KanbanContext)
+  const { updateDb } = useContext(KanbanContext)
   const [creatingComment, setCreatingComment] = useState(false)
   const [activeComments, setActiveComments] = useState(task.comments)
   const [quillValue, setQuillValue] = useState('')
@@ -19,11 +19,10 @@ const CommentsSide = ({ task }) => {
   }
 
   const createComment = () => {
-    console.log('entro')
     if (!creatingComment) {
       setCreatingComment(true)
     } else {
-      let newComment = [
+      let getComments = [
         ...activeComments,
         {
           id: activeComments.length + 1,
@@ -31,11 +30,12 @@ const CommentsSide = ({ task }) => {
           content: quillValue,
         },
       ]
-      setActiveComments(newComment)
+      console.log(getComments)
+      setActiveComments(getComments)
       setCreatingComment(false)
       setQuillValue('')
-      let newTask = { ...task, comments: newComment }
-      updateTaskDDBB(newTask)
+      let newComments = { id: task.id, name: 'comments', value: getComments }
+      updateDb(newComments)
     }
   }
 

@@ -13,13 +13,90 @@ export const Loading = () => {
     },
     {
       id: 'b',
+      title: 'Alert',
+      color: 'rojo',
+    },
+    {
+      id: 'c',
       title: 'Doing',
       color: 'azul',
     },
     {
-      id: 'c',
+      id: 'd',
       title: 'Done',
       color: 'verde',
+    },
+  ]
+  const defaultTasks = [
+    {
+      id: 1,
+      columnId: 'a',
+      content: 'Tarea 1 de columna A',
+      color: 'blanco',
+      properties: [
+        {
+          id: '1',
+          type: 'text',
+          title: 'Titulo Texto',
+          value: 'Valor del texto',
+        },
+        {
+          id: '2',
+          type: 'date',
+          title: 'Fecha',
+          value: '',
+        },
+      ],
+      description: '',
+      comments: [
+        {
+          id: 1,
+          date: '2023/06/24',
+          content:
+            '<p><u>Este es un </u><strong><u>comentario</u> </strong><em>que va</em> a tener <strong style="color: rgb(230, 0, 0);">ciertas </strong>ediciones</p>',
+        },
+        {
+          id: 2,
+          date: '2023/06/24',
+          content:
+            '<p><u>Este es un </u><strong><u>comentario</u> </strong><em>que va</em> a tener <strong style="color: rgb(230, 0, 0);">ciertas </strong>ediciones</p>',
+        },
+      ],
+    },
+    {
+      id: 2,
+      columnId: 'a',
+      content: 'Tarea 2 de columna A',
+      color: 'blanco',
+      properties: [
+        {
+          id: '1',
+          type: 'text',
+          title: 'Titulo Texto',
+          value: 'Valor del texto',
+        },
+        {
+          id: '2',
+          type: 'date',
+          title: 'Fecha',
+          value: '',
+        },
+      ],
+      description: '',
+      comments: [
+        {
+          id: 1,
+          date: '2023/06/24',
+          content:
+            '<p><u>Este es un </u><strong><u>comentario</u> </strong><em>que va</em> a tener <strong style="color: rgb(230, 0, 0);">ciertas </strong>ediciones</p>',
+        },
+        {
+          id: 2,
+          date: '2023/06/24',
+          content:
+            '<p><u>Este es un </u><strong><u>comentario</u> </strong><em>que va</em> a tener <strong style="color: rgb(230, 0, 0);">ciertas </strong>ediciones</p>',
+        },
+      ],
     },
   ]
   useEffect(() => {
@@ -30,57 +107,23 @@ export const Loading = () => {
         if (column.length == 0) {
           // CREA LAS COLUMNAS POR DEFECTO SI NO EXISTEN UNAS GUARDADAS
           defaultColumns.forEach(column => {
-            db_Kanban.collection('columns').add(
-              {
-                id: column.id,
-                title: column.title,
-                color: column.color,
-              },
-              column.id
-            )
+            db_Kanban.collection('columns').add({
+              id: column.id,
+              title: column.title,
+              color: column.color,
+            })
           })
           // CREA LAS TAREAS POR DEFECTO SI NO EXISTEN UNAS GUARDADAS
-          db_Kanban.collection('tasks').add({
-            id: 1,
-            columnId: 'a',
-            content: 'Tarea 1 de columna A',
-            color: 'blanco',
-            properties: [
-              {
-                id: '1',
-                type: 'text',
-                title: 'Coordinadores',
-                value: 'Dato de coordinador',
-              },
-              {
-                id: '2',
-                type: 'date',
-                title: 'Fecha de prueba',
-                value: '',
-              },
-              {
-                id: '3',
-                type: 'list',
-                title: 'Paises',
-                value: '',
-                list: ['Colombia', 'Guatemala', 'Argentina', 'Venezuela'],
-              },
-            ],
-            description: '',
-            comments: [
-              {
-                id: 1,
-                date: '2023/06/24',
-                content:
-                  '<p><u>Este es un </u><strong><u>comentario</u> </strong><em>que va</em> a tener <strong style="color: rgb(230, 0, 0);">ciertas </strong>ediciones</p>',
-              },
-              {
-                id: 2,
-                date: '2023/06/24',
-                content:
-                  '<p><u>Este es un </u><strong><u>comentario</u> </strong><em>que va</em> a tener <strong style="color: rgb(230, 0, 0);">ciertas </strong>ediciones</p>',
-              },
-            ],
+          defaultTasks.forEach(task => {
+            db_Kanban.collection('tasks').add({
+              id: task.id,
+              columnId: task.columnId,
+              content: task.content,
+              color: task.color,
+              properties: task.properties,
+              description: task.description,
+              comments: task.comments,
+            })
           })
         }
       })

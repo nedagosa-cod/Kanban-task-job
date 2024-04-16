@@ -30,14 +30,6 @@ export default function PanelTask({ task, open, onClose }) {
     }))
     updateTaskDDBB(dataTask)
   }
-
-  const updateTask = prop => {
-    setDataTask(prevState => ({
-      ...prevState,
-      properties: prop,
-    }))
-    updateTaskDDBB(dataTask)
-  }
   const sendProps = props => {
     setProperties(props)
     setDataTask(prevState => ({
@@ -78,7 +70,7 @@ export default function PanelTask({ task, open, onClose }) {
         <div className="panel">
           <div className="left">
             {/* {Titulo} */}
-            <PanelTitle dataTask={dataTask} />
+            <PanelTitle task={dataTask} />
 
             {/* {Propiedades} */}
             <div className="left__box-props">
@@ -97,10 +89,7 @@ export default function PanelTask({ task, open, onClose }) {
                 sendProps={sendProps}
               />
             </div>
-            <DescriptionTask
-              task={dataTask}
-              updateDescription={updateDescription}
-            />
+            <DescriptionTask task={dataTask} />
           </div>
           <div className="right">
             <CommentsSide task={dataTask} />

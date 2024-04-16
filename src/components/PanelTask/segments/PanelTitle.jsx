@@ -2,15 +2,14 @@ import { useContext, useState } from 'react'
 import IconTask from '../../../icons/IconTask'
 import KanbanContext from '../../../context/KanbanContext'
 
-export default function PanelTitle({ dataTask }) {
-  const { updateTaskDDBB } = useContext(KanbanContext)
+export default function PanelTitle({ task }) {
+  const { updateDb } = useContext(KanbanContext)
   const [editMode, setEditMode] = useState(false)
-  const [valueTitle, setValueTitle] = useState(dataTask.content)
+  const [valueTitle, setValueTitle] = useState(task.content)
 
-  const updateTitleTask = value => {
-    let newTask = { ...dataTask, content: value }
-    setEditMode(false)
-    updateTaskDDBB(newTask)
+  const updateTitleTask = data => {
+    let newTask = { id: task.id, name: data.name, value: data.value }
+    updateDb(newTask)
   }
 
   return (
@@ -27,7 +26,7 @@ export default function PanelTitle({ dataTask }) {
         placeholder="Titulo de tarea"
         name="content"
         onBlur={e => {
-          updateTitleTask(e.target.value)
+          updateTitleTask(e.target)
         }}
         onKeyDown={e => {
           if (e.key !== 'Enter') return
