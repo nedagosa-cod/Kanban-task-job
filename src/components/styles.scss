@@ -394,6 +394,7 @@ $color9: #f8f9fa;
       &__drag {
         align-items: center;
         justify-content: center;
+        user-select: none;
         display: flex;
         cursor: grab;
         outline: none;

@@ -20,8 +20,10 @@ export default function TaskCard({ task, color, styles }) {
   const [editMode, setEditMode] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
 
-  const onClose = () => {
-    setIsOpen(false)
+  const onClose = e => {
+    if (e.target.className === 'panel-bx-task') {
+      setIsOpen(false)
+    }
   }
   const toggleEditMode = () => {
     setEditMode(prev => !prev)
