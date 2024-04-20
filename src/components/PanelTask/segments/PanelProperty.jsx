@@ -31,19 +31,23 @@ export default function PanelProperty({ panelProperty, task }) {
     // }
 
     let newProps
+
     newProps = task.properties.map(prop => {
       if (prop.id != property.id) return prop
-      return {
+      let result = {
         ...prop,
         [element.name]: element.value,
       }
+      setProperty(result)
+      return result
     })
-    setProperty(newProps)
+
     let sendProps = {
       id: task.id,
       name: 'properties',
       value: newProps,
     }
+    console.log(sendProps)
     updateDb(sendProps)
   }
 

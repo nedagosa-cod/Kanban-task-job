@@ -38,8 +38,7 @@ export const SelectDinamic = ({ updateProperty, property, properties }) => {
       id: property.id,
       type: property.type,
       title: property.title,
-      value: '',
-      list: [...options, nameOption],
+      value: options ? [...options, nameOption] : [nameOption],
       name: property.type,
     })
     setNameOption('')
