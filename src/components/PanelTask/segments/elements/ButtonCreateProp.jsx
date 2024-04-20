@@ -61,7 +61,7 @@ export const ButtonCreateProp = ({ dataProps, sendProps }) => {
 
     const create = type => {
       newProperty.push({
-        id: (properties.length + 1).toString(),
+        id: properties.length + 1,
         type: type,
         title: 'Titulo',
         value: '',
@@ -82,6 +82,7 @@ export const ButtonCreateProp = ({ dataProps, sendProps }) => {
         create('multilist')
         break
     }
+
     setProperties(newProperty)
     sendProps(newProperty)
   }

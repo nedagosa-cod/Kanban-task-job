@@ -5,6 +5,7 @@ const KanbanContext = createContext()
 const db_Kanban = new Localbase('Kanban')
 
 const KanbanProvider = ({ children }) => {
+  const [colorUser, setColorUser] = useState('#e9ecef')
   const [alphabet, setAlphabet] = useState([
     'a',
     'b',
@@ -33,7 +34,6 @@ const KanbanProvider = ({ children }) => {
     'y',
     'z',
   ])
-  const [colorUser, setColorUser] = useState('#e9ecef')
   const [columns, setColumns] = useState([
     // {
     //   id: 'a',
@@ -143,6 +143,7 @@ const KanbanProvider = ({ children }) => {
     setTasks(newTasks)
   }
   const updateTaskDDBB = dataBase => {
+    console.log(dataBase)
     const newTasks = tasks.map(task => {
       if (task.id !== dataBase.id) return task
       db_Kanban
@@ -185,27 +186,45 @@ const KanbanProvider = ({ children }) => {
           lett,
           ...currentLetters.slice(index),
         ]
-        console.log(data)
+
         return data
       })
     }
   }
+  const getDbData = () => {
+    db_Kanban
+      .collection('columns')
+      .get()
+      .then(dbColumns => {
+        dbColumns.forEach(element => {
+          updateAlphabet('delete', element.id)
+        })
+
+        setColumns(dbColumns)
+      })
+
+    db_Kanban
+      .collection('tasks')
+      .get()
+      .then(dbTasks => setTasks(dbTasks))
+  }
   const data = {
     tasks,
-    setTasks,
     columns,
+    colorUser,
+    db_Kanban,
+    alphabet,
+    setTasks,
     setColumns,
     updateTaskDDBB,
     updateTask,
     deleteTask,
     createTask,
     setColorUser,
-    colorUser,
-    db_Kanban,
-    alphabet,
     setAlphabet,
     updateDb,
     updateAlphabet,
+    getDbData,
   }
 
   return (

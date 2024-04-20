@@ -11,32 +11,28 @@ import { createPortal } from 'react-dom'
 
 export default function PanelTask({ task, open, onClose }) {
   if (!open) return null
-  const { updateTaskDDBB } = useContext(KanbanContext)
+  const { updateTaskDDBB, db_Kanban } = useContext(KanbanContext)
+
+  const [properties, setProperties] = useState(task.properties)
 
   const [dataTask, setDataTask] = useState({
     id: task.id,
     color: task.color,
     columnId: task.columnId,
     content: task.content,
-    properties: task.properties,
+    properties: task.content,
     description: task.description,
     comments: task.comments,
   })
 
-  const updateDescription = dataDescription => {
-    setDataTask(prevState => ({
-      ...prevState,
-      description: dataDescription,
-    }))
-    updateTaskDDBB(dataTask)
-  }
   const sendProps = props => {
     setProperties(props)
     setDataTask(prevState => ({
       ...prevState,
-      properties: properties,
+      properties: props,
     }))
-    updateTaskDDBB(dataTask)
+    let newDataTask = { ...dataTask, properties: props }
+    updateTaskDDBB(newDataTask)
   }
 
   // #region inmutables
@@ -46,10 +42,27 @@ export default function PanelTask({ task, open, onClose }) {
     const activeId = active.id
     const overId = over.id
     if (activeId === overId) return
+
     setProperties(props => {
       const oldIndex = props.findIndex(prop => prop.id === activeId)
       const newIndex = props.findIndex(prop => prop.id === overId)
-      return arrayMove(props, oldIndex, newIndex)
+      let result = arrayMove(props, oldIndex, newIndex)
+      // reordenar las columnas
+      db_Kanban
+        .collection('tasks')
+        .get()
+        .then(data => {
+          data.forEach(tarea => {
+            if (task.id === tarea.id) {
+              let newTask = { ...tarea, properties: result }
+              db_Kanban.collection('tasks').doc({ id: task.id }).set(newTask)
+            }
+          })
+        })
+        .catch(error => {
+          console.error('Error al actualizar las columnas:', error)
+        })
+      return result
     })
   }
   const sensors = useSensors(
@@ -75,7 +88,7 @@ export default function PanelTask({ task, open, onClose }) {
             {/* {Propiedades} */}
             <div className="left__box-props">
               <SortableContext items={propsIds}>
-                {task.properties.map(property => (
+                {properties.map(property => (
                   <PanelProperty
                     key={property.id}
                     panelProperty={property}

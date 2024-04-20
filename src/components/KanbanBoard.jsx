@@ -85,10 +85,14 @@ const KanbanBoard = ({ columns, tasks }) => {
         if (tasks[activeIndex].columnId != tasks[overIndex].columnId) {
           // Fix introduced after video recording
           tasks[activeIndex].columnId = tasks[overIndex].columnId
-          return arrayMove(tasks, activeIndex, overIndex - 1)
+          let result = arrayMove(tasks, activeIndex, overIndex - 1)
+          db_Kanban.collection('tasks').set(result)
+          return result
         }
 
-        return arrayMove(tasks, activeIndex, overIndex)
+        let result = arrayMove(tasks, activeIndex, overIndex)
+        db_Kanban.collection('tasks').set(result)
+        return result
       })
     }
 
@@ -100,8 +104,10 @@ const KanbanBoard = ({ columns, tasks }) => {
         const activeIndex = tasks.findIndex(t => t.id === activeId)
 
         tasks[activeIndex].columnId = overId
-        console.log('DROPPING TASK OVER COLUMN', { activeIndex })
-        return arrayMove(tasks, activeIndex, activeIndex)
+
+        let result = arrayMove(tasks, activeIndex, activeIndex)
+        db_Kanban.collection('tasks').set(result)
+        return result
       })
     }
   }
@@ -112,21 +118,31 @@ const KanbanBoard = ({ columns, tasks }) => {
     if (!over) return
     const activeId = active.id
     const overId = over.id
-    if (activeId === overId) return
 
+    if (activeId === overId) return
     const isActiveAColumn = active.data.current?.type === 'Column'
     if (!isActiveAColumn) return
-
     setColumns(columns => {
       const activeColumnIndex = columns.findIndex(col => col.id === activeId)
       const overColumnIndex = columns.findIndex(col => col.id === overId)
-      return arrayMove(columns, activeColumnIndex, overColumnIndex)
+      let result = arrayMove(columns, activeColumnIndex, overColumnIndex)
+
+      // reordenar las columnas
+      db_Kanban
+        .collection('columns')
+        .set(result)
+        .then(() => {
+          console.log('columnas reordenadas exitosamente.')
+        })
+        .catch(error => {
+          console.error('Error al actualizar las columnas:', error)
+        })
+
+      return result
     })
   }
   const createNewColumn = () => {
     const nextLetter = alphabet[0]
-    console.log(nextLetter)
-
     // Crear la nueva columna con la letra disponible
     const columnToAdd = {
       id: nextLetter,
@@ -185,7 +201,6 @@ const KanbanBoard = ({ columns, tasks }) => {
               tasks={tasks.filter(task => task.columnId === activeColumn.id)}
             />
           )}
-          {activeTask && console.log(activeTask)}
           {activeTask && (
             <TaskCard
               task={activeTask}

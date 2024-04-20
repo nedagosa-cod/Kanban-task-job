@@ -18,8 +18,6 @@ export default function ColumnContainer({ column, tasks }) {
     setColumns,
     setTasks,
     db_Kanban,
-    alphabet,
-    setAlphabet,
     updateAlphabet,
   } = useContext(KanbanContext)
   const [editMode, setEditMode] = useState(false)

@@ -5,7 +5,6 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { Dropdown } from 'antd'
 import {
-  ConsoleSqlOutlined,
   CopyOutlined,
   DeleteOutlined,
   EditOutlined,
