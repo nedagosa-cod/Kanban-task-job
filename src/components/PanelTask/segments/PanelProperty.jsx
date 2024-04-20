@@ -29,6 +29,7 @@ export default function PanelProperty({ panelProperty, task }) {
     // } else {
     //   newProperty = { ...property, [element.name]: element.value }
     // }
+
     let newProps
     newProps = task.properties.map(prop => {
       if (prop.id != property.id) return prop
@@ -37,6 +38,7 @@ export default function PanelProperty({ panelProperty, task }) {
         [element.name]: element.value,
       }
     })
+    setProperty(newProps)
     let sendProps = {
       id: task.id,
       name: 'properties',
@@ -203,6 +205,7 @@ export default function PanelProperty({ panelProperty, task }) {
           {/* { END left element} */}
           {/* {right element} */}
           {/* <Select options={options} /> */}
+          {console.log(property)}
           <SelectDinamic
             updateProperty={updateProperty}
             property={property}

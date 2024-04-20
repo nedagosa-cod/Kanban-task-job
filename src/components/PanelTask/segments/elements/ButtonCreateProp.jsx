@@ -4,7 +4,7 @@ import {
   OrderedListOutlined,
   UnorderedListOutlined,
 } from '@ant-design/icons'
-import { Dropdown } from 'antd'
+import { Dropdown, List } from 'antd'
 import React, { useEffect, useState } from 'react'
 import IconPlus from '../../../../icons/IconPlus'
 
@@ -57,14 +57,15 @@ export const ButtonCreateProp = ({ dataProps, sendProps }) => {
   ]
 
   const createProperty = option => {
-    const newProperty = [...properties]
+    const newPropertys = [...properties]
 
     const create = type => {
-      newProperty.push({
+      newPropertys.push({
         id: properties.length + 1,
         type: type,
         title: 'Titulo',
         value: '',
+        List: [],
       })
     }
 
@@ -83,8 +84,8 @@ export const ButtonCreateProp = ({ dataProps, sendProps }) => {
         break
     }
 
-    setProperties(newProperty)
-    sendProps(newProperty)
+    setProperties(newPropertys)
+    sendProps(newPropertys)
   }
 
   useEffect(() => {

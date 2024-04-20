@@ -36,16 +36,23 @@ export const Loading = () => {
       color: 'blanco',
       properties: [
         {
-          id: '1',
+          id: 1,
           type: 'text',
           title: 'Titulo Texto',
           value: 'Valor del texto',
         },
         {
-          id: '2',
+          id: 2,
           type: 'date',
           title: 'Fecha',
           value: '',
+        },
+        {
+          id: 3,
+          type: 'list',
+          title: 'Paises',
+          value: '',
+          list: ['Colombia', 'Guatemala', 'Argentina', 'Venezuela'],
         },
       ],
       description: {

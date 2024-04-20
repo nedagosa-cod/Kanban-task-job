@@ -32,6 +32,7 @@ export default function PanelTask({ task, open, onClose }) {
       properties: props,
     }))
     let newDataTask = { ...dataTask, properties: props }
+
     updateTaskDDBB(newDataTask)
   }
 

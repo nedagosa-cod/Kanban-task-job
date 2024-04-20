@@ -1,7 +1,7 @@
 import { CloseCircleOutlined } from '@ant-design/icons'
 import { useEffect, useRef, useState } from 'react'
 
-export const SelectDinamic = ({ updateProperty, property }) => {
+export const SelectDinamic = ({ updateProperty, property, properties }) => {
   const [options, setOption] = useState(property.list)
   const [optionsSelected, setOptionsSelected] = useState(property.value)
   const [nameOption, setNameOption] = useState('')
@@ -28,7 +28,22 @@ export const SelectDinamic = ({ updateProperty, property }) => {
       name: property.type,
     })
   }
+  const updateOptions = e => {
+    setOption(prevOpt => {
+      if (prevOpt) return [...prevOpt, e.target.value]
+      return [e.target.value]
+    })
 
+    updateProperty({
+      id: property.id,
+      type: property.type,
+      title: property.title,
+      value: '',
+      list: [...options, nameOption],
+      name: property.type,
+    })
+    setNameOption('')
+  }
   useEffect(() => {
     //cierra el select dinamico
     document.addEventListener('click', e => {
@@ -65,25 +80,26 @@ export const SelectDinamic = ({ updateProperty, property }) => {
 
         <div className={'SelectDinamic__hide-content ' + selectActive}>
           <div className="SelectDinamic__options-content">
-            {options.map((option, i) => (
-              <label
-                htmlFor="createList"
-                className="SelectDinamic__options-content--option content-option"
-                key={i}
-                onClick={() => {
-                  newOptionSelected(option)
-                  setSelectActive(false)
-                }}>
-                <p>{option}</p>
-                <span
-                  className="option-delete"
+            {options &&
+              options.map((option, i) => (
+                <label
+                  htmlFor="createList"
+                  className="SelectDinamic__options-content--option content-option"
+                  key={i}
                   onClick={() => {
-                    deleteOption(false, option)
+                    newOptionSelected(option)
+                    setSelectActive(false)
                   }}>
-                  <CloseCircleOutlined />
-                </span>
-              </label>
-            ))}
+                  <p>{option}</p>
+                  <span
+                    className="option-delete"
+                    onClick={() => {
+                      deleteOption(false, option)
+                    }}>
+                    <CloseCircleOutlined />
+                  </span>
+                </label>
+              ))}
           </div>
 
           {!editMode && (
@@ -104,10 +120,7 @@ export const SelectDinamic = ({ updateProperty, property }) => {
               }}
               onKeyDown={e => {
                 if (e.key !== 'Enter') return
-                setOption(prevOpt => {
-                  return [...prevOpt, e.target.value]
-                })
-                setNameOption('')
+                updateOptions(e)
               }}
               onChange={e => {
                 setNameOption(e.target.value)
