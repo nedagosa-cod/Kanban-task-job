@@ -44,16 +44,16 @@ export const ButtonCreateProp = ({ dataProps, sendProps }) => {
       ),
       disabled: false,
     },
-    {
-      key: '4',
-      icon: <UnorderedListOutlined style={{ color: '#212529' }} />,
-      label: (
-        <button className="button-color" style={{ color: '#212529' }}>
-          Lista Multiseleccion
-        </button>
-      ),
-      disabled: false,
-    },
+    // {
+    //   key: '4',
+    //   icon: <UnorderedListOutlined style={{ color: '#212529' }} />,
+    //   label: (
+    //     <button className="button-color" style={{ color: '#212529' }}>
+    //       Lista Multiseleccion
+    //     </button>
+    //   ),
+    //   disabled: false,
+    // },
   ]
 
   const createProperty = option => {

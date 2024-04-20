@@ -12,9 +12,17 @@ export const SelectDinamic = ({ updateProperty, property, properties }) => {
 
   const deleteOption = (title, listDelete) => {
     if (title) {
-      console.log('hola')
       setOptionsSelected('')
       setPlaceholder(true)
+
+      console.log(options)
+      updateProperty({
+        id: property.id,
+        type: property.type,
+        title: property.title,
+        value: '',
+        name: 'value',
+      })
     } else {
       const newArray = options.filter(element => !element.includes(listDelete))
       setOption(newArray)
@@ -23,9 +31,8 @@ export const SelectDinamic = ({ updateProperty, property, properties }) => {
   const newOptionSelected = newValueOption => {
     setOptionsSelected(newValueOption)
     updateProperty({
-      list: options,
       value: newValueOption,
-      name: property.type,
+      name: 'value',
     })
   }
   const updateOptions = e => {
@@ -44,6 +51,7 @@ export const SelectDinamic = ({ updateProperty, property, properties }) => {
     setNameOption('')
   }
   useEffect(() => {
+    console.log(property.list)
     //cierra el select dinamico
     document.addEventListener('click', e => {
       !$selectDianamic.current?.contains(e.target) && setSelectActive(false)
@@ -79,6 +87,7 @@ export const SelectDinamic = ({ updateProperty, property, properties }) => {
 
         <div className={'SelectDinamic__hide-content ' + selectActive}>
           <div className="SelectDinamic__options-content">
+            {console.log(options)}
             {options &&
               options.map((option, i) => (
                 <label

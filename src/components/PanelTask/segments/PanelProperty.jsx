@@ -19,19 +19,7 @@ export default function PanelProperty({ panelProperty, task }) {
   const [valueProp, setValuePrp] = useState(property.value)
 
   const updateProperty = element => {
-    // let newProperty = {}
-    // if (element.list) {
-    //   newProperty = {
-    //     ...property,
-    //     [element.name]: element.list,
-    //     value: element.value,
-    //   }
-    // } else {
-    //   newProperty = { ...property, [element.name]: element.value }
-    // }
-
     let newProps
-
     newProps = task.properties.map(prop => {
       if (prop.id != property.id) return prop
       let result = {
@@ -41,13 +29,11 @@ export default function PanelProperty({ panelProperty, task }) {
       setProperty(result)
       return result
     })
-
     let sendProps = {
       id: task.id,
       name: 'properties',
       value: newProps,
     }
-    console.log(sendProps)
     updateDb(sendProps)
   }
 
@@ -206,16 +192,12 @@ export default function PanelProperty({ panelProperty, task }) {
               />
             )}
           </button>
-          {/* { END left element} */}
-          {/* {right element} */}
-          {/* <Select options={options} /> */}
-          {console.log(property)}
+
           <SelectDinamic
             updateProperty={updateProperty}
             property={property}
             properties={task.properties}
           />
-          {/* {END right element} */}
         </div>
       )
     default:
