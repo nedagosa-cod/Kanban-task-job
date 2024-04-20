@@ -3,14 +3,20 @@ import KanbanBoard from './KanbanBoard'
 import KanbanContext from '../context/KanbanContext'
 
 const Kanban = () => {
-  const { db_Kanban, columns, setColumns, tasks, setTasks } =
+  const { db_Kanban, columns, setColumns, tasks, setTasks, updateAlphabet } =
     useContext(KanbanContext)
 
   const getDbData = () => {
     db_Kanban
       .collection('columns')
       .get()
-      .then(dbColumns => setColumns(dbColumns))
+      .then(dbColumns => {
+        dbColumns.forEach(element => {
+          updateAlphabet('delete', element.id)
+        })
+
+        setColumns(dbColumns)
+      })
 
     db_Kanban
       .collection('tasks')

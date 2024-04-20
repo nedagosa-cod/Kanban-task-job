@@ -3,7 +3,8 @@ import './loadig.scss'
 import KanbanContext from '../../context/KanbanContext'
 import { useNavigate } from 'react-router-dom'
 export const Loading = () => {
-  const { db_Kanban, setColumns, setTasks } = useContext(KanbanContext)
+  const { db_Kanban, setColumns, setTasks, updateAlphabet } =
+    useContext(KanbanContext)
   const navigate = useNavigate()
   const defaultColumns = [
     {
@@ -47,7 +48,13 @@ export const Loading = () => {
           value: '',
         },
       ],
-      description: '',
+      description: {
+        ops: [
+          {
+            insert: 'Hola mundo seee\n',
+          },
+        ],
+      },
       comments: [
         {
           id: 1,
@@ -107,6 +114,7 @@ export const Loading = () => {
         if (column.length == 0) {
           // CREA LAS COLUMNAS POR DEFECTO SI NO EXISTEN UNAS GUARDADAS
           defaultColumns.forEach(column => {
+            updateAlphabet('delete', column.id)
             db_Kanban.collection('columns').add({
               id: column.id,
               title: column.title,

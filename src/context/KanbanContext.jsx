@@ -5,7 +5,34 @@ const KanbanContext = createContext()
 const db_Kanban = new Localbase('Kanban')
 
 const KanbanProvider = ({ children }) => {
-  const [alphabet, setAlphabet] = useState('efghijklmnopqrstuvwxyz')
+  const [alphabet, setAlphabet] = useState([
+    'a',
+    'b',
+    'c',
+    'd',
+    'e',
+    'f',
+    'g',
+    'h',
+    'i',
+    'j',
+    'k',
+    'l',
+    'm',
+    'n',
+    'o',
+    'p',
+    'q',
+    'r',
+    's',
+    't',
+    'u',
+    'v',
+    'w',
+    'x',
+    'y',
+    'z',
+  ])
   const [colorUser, setColorUser] = useState('#e9ecef')
   const [columns, setColumns] = useState([
     // {
@@ -141,6 +168,28 @@ const KanbanProvider = ({ children }) => {
       )
     )
   }
+  const updateAlphabet = (effect, lett) => {
+    if (effect == 'delete') {
+      setAlphabet(prev => prev.filter(letter => letter !== lett))
+    } else {
+      setAlphabet(currentLetters => {
+        // Encuentra el índice donde debería insertarse la nueva letra
+        const index = currentLetters.findIndex(letter => letter > lett)
+        // Si no se encuentra un lugar, añade al final
+        if (index === -1) {
+          return [...currentLetters, lett]
+        }
+        // De otro modo, inserta la letra en la posición correcta
+        let data = [
+          ...currentLetters.slice(0, index),
+          lett,
+          ...currentLetters.slice(index),
+        ]
+        console.log(data)
+        return data
+      })
+    }
+  }
   const data = {
     tasks,
     setTasks,
@@ -156,6 +205,7 @@ const KanbanProvider = ({ children }) => {
     alphabet,
     setAlphabet,
     updateDb,
+    updateAlphabet,
   }
 
   return (

@@ -3,6 +3,7 @@ import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import KanbanContext from '../../../context/KanbanContext'
 import { useContext, useState } from 'react'
+import QuillEditor from '../../QuillEditor/QuillEditor'
 
 export default function DescriptionTask({ task }) {
   const { updateDb } = useContext(KanbanContext)
@@ -56,6 +57,11 @@ export default function DescriptionTask({ task }) {
           setDescription(value)
         }}
       />
+      {/* <QuillEditor
+        passText={setDescription}
+        value={description}
+        updateDescription={updateDescription}
+      /> */}
     </div>
   )
 }

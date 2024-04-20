@@ -18,6 +18,9 @@ export default function ColumnContainer({ column, tasks }) {
     setColumns,
     setTasks,
     db_Kanban,
+    alphabet,
+    setAlphabet,
+    updateAlphabet,
   } = useContext(KanbanContext)
   const [editMode, setEditMode] = useState(false)
 
@@ -73,9 +76,8 @@ export default function ColumnContainer({ column, tasks }) {
         db_Kanban.collection('tasks').doc({ columnId: id }).delete()
       }
     })
-    const updatedAlphabet = alphabet.split('').concat(id).sort().join('')
 
-    setAlphabet(updatedAlphabet)
+    updateAlphabet('add', id)
   }
   const tasksIds = useMemo(() => {
     return tasks.map(task => task.id)

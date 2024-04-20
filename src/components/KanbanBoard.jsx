@@ -14,7 +14,7 @@ import {
 } from '@dnd-kit/core'
 
 const KanbanBoard = ({ columns, tasks }) => {
-  const { setTasks, setColumns, db_Kanban, alphabet, setAlphabet } =
+  const { setTasks, setColumns, db_Kanban, alphabet, updateAlphabet } =
     useContext(KanbanContext)
   const columColors = {
     blanco: '#f8f9fa',
@@ -125,6 +125,7 @@ const KanbanBoard = ({ columns, tasks }) => {
   }
   const createNewColumn = () => {
     const nextLetter = alphabet[0]
+    console.log(nextLetter)
 
     // Crear la nueva columna con la letra disponible
     const columnToAdd = {
@@ -138,7 +139,7 @@ const KanbanBoard = ({ columns, tasks }) => {
     setColumns([...columns, columnToAdd])
 
     // Actualizar el estado de las letras disponibles
-    setAlphabet(alphabet.substring(1))
+    updateAlphabet('delete', nextLetter)
   }
 
   return (
@@ -168,6 +169,12 @@ const KanbanBoard = ({ columns, tasks }) => {
             className="kanban-container__sortable--button">
             <IconPlus />
             Add Column
+          </button>
+          <button
+            type="button"
+            className="kanban-container__sortable--button"
+            onClick={() => console.log(alphabet)}>
+            TEST
           </button>
         </div>
 
@@ -202,11 +209,6 @@ const KanbanBoard = ({ columns, tasks }) => {
           )}
         </DragOverlay>
       </DndContext>
-      {/* {activePanel &&
-        createPortal(
-          <PanelTask task={dataPanel} closePanelTask={closePanelTask} />,
-          document.body
-        )} */}
     </div>
   )
 }
